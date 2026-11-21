@@ -1,0 +1,23 @@
+package com.aayush.blackjack.wallet.repository;
+
+import com.aayush.blackjack.wallet.entity.ChipTransaction;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+public interface ChipTransactionRepository extends JpaRepository<ChipTransaction, UUID> {
+
+    Optional<ChipTransaction> findByReferenceKey(String referenceKey);
+
+    List<ChipTransaction> findByUser_IdOrderByCreatedAtDesc(UUID userId);
+
+    @Modifying
+    @Query("UPDATE ChipTransaction t SET t.dailyRewardClaim = null where t.dailyRewardClaim.id in :claimIds")
+    void clearDailyRewardClaimReferences(@Param("claimIds") Collection<UUID> claimIds);
+}
