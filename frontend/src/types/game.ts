@@ -49,6 +49,7 @@ export interface GameStateSnapshot {
   roundId: string;
   roomId: string;
   roomName: string;
+  roomSlug: string;
   roundStatus: RoundStatus;
   connectionStatus: ConnectionStatus;
   controllerTab: boolean;

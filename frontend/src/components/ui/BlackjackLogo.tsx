@@ -15,7 +15,7 @@ const SIZE_CONFIG = {
     card: "h-8 w-6 rounded-md p-1 text-[9px]",
     backCardOffset: { x: -5, y: 1, rotate: -14 },
     frontCardOffset: { x: 5, y: -1, rotate: 10 },
-    chipBadge: "h-4 w-4 text-[8px] -bottom-1 -right-1",
+    chipBadge: "h-4 w-4 text-[8px] bottom-0.5 right-0.5",
     title: "text-base",
     subtitle: "text-[10px]",
     gap: "gap-2.5",
@@ -25,7 +25,7 @@ const SIZE_CONFIG = {
     card: "h-10 w-7 rounded-lg p-1 text-[10px]",
     backCardOffset: { x: -6, y: 2, rotate: -15 },
     frontCardOffset: { x: 6, y: -1, rotate: 11 },
-    chipBadge: "h-5 w-5 text-[9px] -bottom-1 -right-1.5",
+    chipBadge: "h-5 w-5 text-[9px] bottom-0.5 right-0.5",
     title: "text-xl",
     subtitle: "text-[11px]",
     gap: "gap-3",
@@ -35,7 +35,7 @@ const SIZE_CONFIG = {
     card: "h-14 w-10 rounded-xl p-1.5 text-xs",
     backCardOffset: { x: -9, y: 2, rotate: -16 },
     frontCardOffset: { x: 9, y: -2, rotate: 12 },
-    chipBadge: "h-6 w-6 text-[10px] -bottom-1.5 -right-2",
+    chipBadge: "h-6 w-6 text-[10px] bottom-1 right-1",
     title: "text-2xl sm:text-3xl",
     subtitle: "text-xs",
     gap: "gap-4",
@@ -67,7 +67,7 @@ export function BlackjackLogo({
       <motion.div
         whileHover={prefersReducedMotion ? undefined : "hover"}
         whileTap={prefersReducedMotion || !onClick ? undefined : { scale: 0.96 }}
-        className={`relative flex shrink-0 items-center justify-center ${cfg.emblemBox}`}
+        className={`relative isolate flex shrink-0 items-center justify-center overflow-hidden rounded-xl ${cfg.emblemBox}`}
       >
         {/* Emerald Felt Radial Glow */}
         <motion.div
@@ -104,9 +104,9 @@ export function BlackjackLogo({
           }}
           variants={{
             hover: {
-              x: cfg.backCardOffset.x - 3,
+              x: cfg.backCardOffset.x - 2,
               y: cfg.backCardOffset.y - 2,
-              rotate: cfg.backCardOffset.rotate - 6,
+              rotate: cfg.backCardOffset.rotate - 5,
             },
           }}
           transition={{ type: "spring", stiffness: 280, damping: 20 }}
@@ -139,9 +139,9 @@ export function BlackjackLogo({
           }}
           variants={{
             hover: {
-              x: cfg.frontCardOffset.x + 3,
-              y: cfg.frontCardOffset.y - 3,
-              rotate: cfg.frontCardOffset.rotate + 6,
+              x: cfg.frontCardOffset.x + 2,
+              y: cfg.frontCardOffset.y - 2,
+              rotate: cfg.frontCardOffset.rotate + 5,
             },
           }}
           transition={{

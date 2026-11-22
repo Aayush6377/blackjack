@@ -52,6 +52,7 @@ public class GameService {
     private final GameSnapshotService snapshotService;
     private final RoundSettlementService settlementService;
     private final WalletService walletService;
+    private final RoundRetentionService roundRetentionService;
 
     @Transactional(readOnly = true)
     public Optional<GameStateSnapshot> getActiveGameSnapshot() {
@@ -324,6 +325,7 @@ public class GameService {
             round.setStatus(RoundStatus.COMPLETED);
             round.setCompletedAt(Instant.now());
             gameRoundRepository.save(round);
+            roundRetentionService.pruneOldRoundsForUser(userId);
         }
 
         GameStateSnapshot snapshot = snapshotService.buildSnapshot(round, userId, null, ConnectionStatus.DISCONNECTED);

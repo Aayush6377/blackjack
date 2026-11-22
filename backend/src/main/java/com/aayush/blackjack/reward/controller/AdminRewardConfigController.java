@@ -1,9 +1,6 @@
 package com.aayush.blackjack.reward.controller;
 
-import com.aayush.blackjack.reward.dto.BulkCreateRewardConfigRequest;
-import com.aayush.blackjack.reward.dto.CreateRewardConfigRequest;
-import com.aayush.blackjack.reward.dto.RewardConfigResponse;
-import com.aayush.blackjack.reward.dto.UpdateRewardConfigRequest;
+import com.aayush.blackjack.reward.dto.*;
 import com.aayush.blackjack.reward.service.RewardConfigAdminService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -53,5 +50,12 @@ public class AdminRewardConfigController {
     @DeleteMapping("/{configId}")
     public ResponseEntity<List<RewardConfigResponse>> deleteConfig(@PathVariable UUID configId) {
         return ResponseEntity.ok(adminService.delete(configId));
+    }
+
+    @PostMapping("/bulk-delete")
+    public ResponseEntity<BulkDeleteRewardConfigResponse> bulkDelete(
+            @Valid @RequestBody BulkDeleteRewardConfigRequest request
+    ) {
+        return ResponseEntity.ok(adminService.bulkDelete(request));
     }
 }

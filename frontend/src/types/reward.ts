@@ -48,3 +48,15 @@ export interface DailyRewardStatusResponse {
   schedule: RewardConfigResponse[];
   recentClaims: DailyRewardClaimResponse[];
 }
+
+export interface BulkDeleteRewardConfigRequest {
+  startDay?: number;
+  endDay?: number;
+  dayNumbers?: number[];
+}
+
+export interface BulkDeleteRewardConfigResponse {
+  deletedCount: number;
+  deletedDayNumbers: number[];
+  remainingConfigs: RewardConfigResponse[];
+}

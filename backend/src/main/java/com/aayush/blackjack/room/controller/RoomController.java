@@ -24,8 +24,8 @@ public class RoomController {
         return ResponseEntity.ok(roomService.getAllRoomsForCurrentUser());
     }
 
-    @GetMapping("/{roomId}")
-    public ResponseEntity<RoomSummaryResponse> getRoomById(@PathVariable UUID roomId) {
-        return ResponseEntity.ok(roomService.getRoomByIdForCurrentUser(roomId));
+    @GetMapping("/{slug}")
+    public ResponseEntity<RoomSummaryResponse> getRoomBySlug(@PathVariable String slug) {
+        return ResponseEntity.ok(roomService.getRoomBySlugForCurrentUser(slug));
     }
 }

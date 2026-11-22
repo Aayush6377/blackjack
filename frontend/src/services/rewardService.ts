@@ -10,6 +10,8 @@ import {
 } from "../schema/reward.schema";
 import type {
   BulkCreateRewardConfigRequest,
+  BulkDeleteRewardConfigRequest,
+  BulkDeleteRewardConfigResponse,
   CreateRewardConfigRequest,
   DailyRewardClaimResponse,
   DailyRewardStatusResponse,
@@ -81,5 +83,13 @@ export const rewardService = {
       `${ADMIN_CONFIG_BASE}/${configId}`
     );
     return parseWithSchema(z.array(rewardConfigResponseSchema), data);
+  },
+
+  async bulkDeleteRewardConfigs(payload: BulkDeleteRewardConfigRequest): Promise<BulkDeleteRewardConfigResponse> {
+    const response = await apiClient.post<BulkDeleteRewardConfigResponse>(
+      `${ADMIN_CONFIG_BASE}/bulk-delete`,
+      payload
+    );
+    return response.data;
   },
 };

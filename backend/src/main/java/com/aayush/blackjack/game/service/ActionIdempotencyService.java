@@ -15,7 +15,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class ActionIdempotencyService {
-    private static final Duration IDEMPOTENCY_TTL = Duration.ofHours(24);
+    private static final Duration IDEMPOTENCY_TTL = Duration.ofMinutes(15);
 
     private final StringRedisTemplate redisTemplate;
     private final ObjectMapper objectMapper;

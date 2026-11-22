@@ -65,12 +65,11 @@ export function StreakHeroCard({
 
           <div className="flex flex-wrap items-baseline gap-3 rounded-2xl border border-amber-400/20 bg-zinc-950/70 px-4 py-3">
             <span className="text-xs font-semibold uppercase tracking-wider text-zinc-400">
-              {status.claimedToday ? "Last / Next Reward" : "Available Today"}
+              {status.claimedToday ? "Last Reward" : "Available Today"}
             </span>
             <div className="flex items-center gap-1.5 text-2xl font-extrabold text-amber-300">
               <ChipAmount
                 amount={status.nextChipsReward}
-                suffix="Chips"
                 iconClassName="h-5 w-5 shrink-0 text-amber-400"
               />
             </div>

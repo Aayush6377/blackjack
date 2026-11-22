@@ -1,9 +1,7 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import { GuestRoute } from "./GuestRoute";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { BlackjackErrorState } from "../components/ui/BlackjackErrorState";
-
-
 import { LoginPage } from "../pages/auth/LoginPage";
 import { SignupPage } from "../pages/auth/SignupPage";
 import { OAuth2CallbackPage } from "../pages/auth/OAuth2CallbackPage";
@@ -12,6 +10,13 @@ import { UserLayout } from "../components/layout/user/UserLayout";
 import RoomsPage from "../pages/user/RoomsPage";
 import RoomPlayPage from "../pages/user/RoomPlayPage";
 import DailyRewardsPage from "../pages/user/DailyRewardsPage";
+import ReplaysPage from "../pages/user/ReplaysPage";
+import RoundReplayPage from "../pages/user/RoundReplayPage";
+import { AdminLayout } from "../components/layout/admin/AdminLayout";
+import { AdminDashboardPage } from "../pages/admin/AdminDashboardPage";
+import AdminPlansPage from "../pages/admin/AdminPlansPage";
+import AdminRewardsPage from "../pages/admin/AdminRewardsPage";
+import AdminAuditLogsPage from "../pages/admin/AdminAuditLogsPage";
 
 export const router = createBrowserRouter([
   {
@@ -41,6 +46,8 @@ export const router = createBrowserRouter([
                 { path: "/rooms", element: <RoomsPage /> },
                 { path: "/rooms/:roomId", element: <RoomPlayPage /> },
                 { path: "/rewards/daily", element: <DailyRewardsPage /> },
+                { path: "/replays", element: <ReplaysPage /> },
+                { path: "/replays/:roundId", element: <RoundReplayPage /> },
                 // { path: "/wallet", element: <WalletPage /> },
                 // { path: "/profile", element: <ProfilePage /> },
             ]
@@ -53,14 +60,16 @@ export const router = createBrowserRouter([
         children: [
           {
             path: "/admin",
-            // element: <AdminLayout />,
-            // children: [
-            //   { index: true, element: <Navigate to="/admin/overview" replace /> },
-            //   { path: "overview", element: <AdminDashboardPage /> },
-            //   { path: "rooms", element: <AdminRoomsPage /> },
-            //   { path: "users", element: <AdminUsersPage /> },
-            //   { path: "ledger", element: <AdminLedgerPage /> },
-            // ],
+            element: <AdminLayout />,
+            children: [
+              { index: true, element: <Navigate to="/admin/overview" replace /> },
+              { path: "overview", element: <AdminDashboardPage /> },
+              { path: "plans", element: <AdminPlansPage /> },
+              // { path: "users", element: <AdminUsersPage /> },
+              { path: "rewards", element: <AdminRewardsPage /> },
+              // { path: "rooms", element: <AdminRoomsPage /> },
+              { path: "audit-logs", element: <AdminAuditLogsPage /> },
+            ],
           },
         ],
       },

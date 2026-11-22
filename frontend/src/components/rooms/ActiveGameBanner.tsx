@@ -45,7 +45,7 @@ export function ActiveGameBanner({
         <div className="flex flex-wrap items-center gap-2.5">
           <button
             type="button"
-            onClick={() => onResumeRoom(activeGame.roomId, activeGame.roundId)}
+            onClick={() => onResumeRoom(activeGame.roomSlug, activeGame.roundId)}
             className="rounded-xl bg-amber-400 px-4 py-2 text-sm font-semibold text-zinc-950 transition hover:bg-amber-300 cursor-pointer"
           >
             Enter Active Room

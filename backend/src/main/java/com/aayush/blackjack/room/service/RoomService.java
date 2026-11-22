@@ -54,11 +54,13 @@ public class RoomService {
     }
 
     @Transactional(readOnly = true)
-    public RoomSummaryResponse getRoomByIdForCurrentUser(UUID roomId) {
+    public RoomSummaryResponse getRoomBySlugForCurrentUser(String slug) {
         UUID userId = currentUserService.getCurrentUserId();
         long walletBalance = walletService.getBalance(userId);
 
-        GameRoom room = gameRoomRepository.findById(roomId)
+        String normalizedSlug = slug == null ? "" : slug.trim();
+
+        GameRoom room = gameRoomRepository.findBySlug(normalizedSlug)
                 .filter(r -> Boolean.TRUE.equals(r.getActive()))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Game room not found"));
 

@@ -43,6 +43,7 @@ public class RoundSettlementService {
     private final RoomUnlockRuleRepository roomUnlockRuleRepository;
     private final ChipWalletRepository chipWalletRepository;
     private final WalletService walletService;
+    private final RoundRetentionService roundRetentionService;
 
     public void settleRound(
             GameRound round,
@@ -126,6 +127,7 @@ public class RoundSettlementService {
 
         boolean roundWon = totalNet > 0;
         updateRoomProgressAndUnlocks(round.getUser(), round.getRoom(), roundWon);
+        roundRetentionService.pruneOldRoundsForUser(round.getUser().getId());
     }
 
     private void updateRoomProgressAndUnlocks(User user, GameRoom room, boolean roundWon) {

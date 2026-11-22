@@ -17,6 +17,7 @@ public record GameStateSnapshot(
         UUID roundId,
         UUID roomId,
         String roomName,
+        String roomSlug,
         RoundStatus roundStatus,
         ConnectionStatus connectionStatus,
         long walletBalance,

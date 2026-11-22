@@ -72,6 +72,7 @@ public class GameSnapshotService {
                 .roundId(round.getId())
                 .roomId(round.getRoom().getId())
                 .roomName(round.getRoom().getName())
+                .roomSlug(round.getRoom().getSlug())
                 .roundStatus(round.getStatus())
                 .connectionStatus(connStatus)
                 .controllerTab(isController)

@@ -20,4 +20,8 @@ public interface ChipTransactionRepository extends JpaRepository<ChipTransaction
     @Modifying
     @Query("UPDATE ChipTransaction t SET t.dailyRewardClaim = null where t.dailyRewardClaim.id in :claimIds")
     void clearDailyRewardClaimReferences(@Param("claimIds") Collection<UUID> claimIds);
+
+    @Modifying
+    @Query("UPDATE ChipTransaction ct SET ct.gameRound = null WHERE ct.gameRound.id IN :roundIds")
+    void clearGameRoundByRoundIds(@Param("roundIds") List<UUID> roundIds);
 }

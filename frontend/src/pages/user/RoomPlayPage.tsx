@@ -9,6 +9,7 @@ import { AppFooter } from "../../components/ui/AppFooter";
 import { useRoomPlaySession } from "../../hooks/useRoomPlaySession";
 import { useRoom } from "../../hooks/useRooms";
 import type { RoomSummary } from "../../types/room";
+import { BlackjackLoader } from "../../components/ui/BlackjackLoader";
 
 interface LocationState {
   room?: RoomSummary;
@@ -88,12 +89,16 @@ export default function RoomPlayPage() {
   };
 
   if (isRoomLoading && !room) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-zinc-950 text-zinc-300">
-        Loading table...
-      </div>
-    );
-  }
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-zinc-950 px-4">
+      <BlackjackLoader
+        size="lg"
+        label="Preparing your table"
+        sublabel="Shuffling the shoe and checking seat availability..."
+      />
+    </div>
+  );
+}
 
   if (isRoomError || !room) {
     return (

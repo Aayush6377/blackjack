@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { rewardService } from "../services/rewardService";
 import type {
   BulkCreateRewardConfigRequest,
+  BulkDeleteRewardConfigRequest,
   CreateRewardConfigRequest,
   UpdateRewardConfigRequest,
 } from "../types/reward";
@@ -87,6 +88,18 @@ export function useDeleteRewardConfig() {
 
   return useMutation({
     mutationFn: (configId: string) => rewardService.deleteRewardConfig(configId),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: rewardKeys.all });
+    },
+  });
+}
+
+export function useBulkDeleteRewardConfigs() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (payload: BulkDeleteRewardConfigRequest) =>
+      rewardService.bulkDeleteRewardConfigs(payload),
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: rewardKeys.all });
     },

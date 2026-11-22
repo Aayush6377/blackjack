@@ -6,6 +6,7 @@ import { RoomsGrid } from "../../components/rooms/RoomsGrid";
 import { ConfirmModal } from "../../components/ui/ConfirmModal";
 import { useActiveGame, useLeaveGame, useRooms } from "../../hooks/useRooms";
 import type { RoomSummary } from "../../types/room";
+import { History } from "lucide-react";
 
 interface RoomsLocationState {
   lowWalletNotice?: string;
@@ -49,11 +50,11 @@ export default function RoomsPage() {
 
     setEntryNotice(null);
     setSelectedRulesRoom(null);
-    navigate(`/rooms/${room.id}`, { state: { room } });
+    navigate(`/rooms/${room.slug}`, { state: { room } });
   };
 
-  const handleResumeRoom = (roomId: string, roundId: string) => {
-    navigate(`/rooms/${roomId}`, { state: { roundId, resume: true } });
+  const handleResumeRoom = (slug: string, roundId: string) => {
+    navigate(`/rooms/${slug}`, { state: { roundId, resume: true } });
   };
 
   const handleLeaveGame = (gameId: string) => {
@@ -61,21 +62,30 @@ export default function RoomsPage() {
   };
 
   return (
-    <section className="min-h-screen bg-[radial-gradient(ellipse_at_top,_rgba(16,185,129,0.12),_transparent_55%),_#09090b] text-zinc-100">
-      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+    <section className="min-h-screen overflow-x-hidden bg-[radial-gradient(ellipse_at_top,_rgba(16,185,129,0.12),_transparent_55%),_#09090b] text-zinc-100">
+      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
         {/* Page Header */}
-        <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-widest text-amber-400">
+        <div className="mb-6 flex items-start justify-between gap-3 sm:items-end">
+          <div className="min-w-0">
+            <div className="text-[11px] font-semibold uppercase tracking-widest text-amber-400 sm:text-xs">
               Blackjack Royale · Tables &amp; Rules
-            </p>
-            <h1 className="mt-1 text-3xl font-bold tracking-tight text-white">
+            </div>
+            <h1 className="mt-1 text-2xl font-bold tracking-tight text-white sm:text-3xl">
               Game Rooms
             </h1>
-            <p className="mt-1 text-sm text-zinc-400">
+            <p className="mt-1 text-xs text-zinc-400 sm:text-sm">
               Pick an unlocked table, review shoe &amp; payout rules, and enter a room when ready.
             </p>
           </div>
+
+          <button
+            type="button"
+            onClick={() => navigate("/replays")}
+            className="inline-flex shrink-0 cursor-pointer items-center gap-1.5 rounded-xl border border-amber-400/35 bg-amber-500/10 px-3 py-2 text-xs font-semibold text-amber-300 transition hover:border-amber-400/55 hover:bg-amber-500/20 sm:px-3.5"
+          >
+            <History className="h-3.5 w-3.5 shrink-0" />
+            <span>Replays</span>
+          </button>
         </div>
 
         {/* Active Game Banner */}

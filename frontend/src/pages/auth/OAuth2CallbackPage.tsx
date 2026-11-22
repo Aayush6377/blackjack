@@ -5,50 +5,68 @@ import { useAuth } from "../../hooks/useAuth";
 import { BlackjackLoader } from "../../components/ui/BlackjackLoader";
 import { BlackjackErrorState } from "../../components/ui/BlackjackErrorState";
 
+function resolveTargetRoute(role?: string | null): string {
+  return role?.trim().toUpperCase() === "ADMIN" ? "/admin" : "/rooms";
+}
+
 export function OAuth2CallbackPage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const { applyAuthResponse } = useAuth();
+  const { user, applyAuthResponse } = useAuth();
 
   const processedRef = useRef(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [authApplied, setAuthApplied] = useState(false);
 
   useEffect(() => {
     if (processedRef.current) return;
     processedRef.current = true;
 
-    const oauthError = searchParams.get("error");
+    const authError = searchParams.get("error");
     const accessToken = searchParams.get("token");
 
-    if (oauthError) {
-      const decodedError = decodeURIComponent(oauthError);
+    if (authError) {
+      const decodedError = decodeURIComponent(authError);
       setErrorMessage(
-        decodedError || "OAuth sign-in was cancelled or failed."
+        decodedError || "Authentication could not be completed."
       );
       return;
     }
 
     if (!accessToken) {
       setErrorMessage(
-        "No authentication token was returned from the login provider."
+        "No session token was returned from the authentication flow."
       );
       return;
     }
 
-    applyAuthResponse({
-      accessToken,
-    } as Parameters<typeof applyAuthResponse>[0]);
+    Promise.resolve(
+      applyAuthResponse({
+        accessToken,
+      } as Parameters<typeof applyAuthResponse>[0])
+    )
+      .then(() => {
+        setAuthApplied(true);
+      })
+      .catch(() => {
+        setErrorMessage("Unable to initialize your session. Please try again.");
+      });
+  }, [searchParams, applyAuthResponse]);
 
-    toast.success("Signed in successfully!");
-    navigate("/rooms", { replace: true });
-  }, [searchParams, applyAuthResponse, navigate]);
+  useEffect(() => {
+    if (!authApplied) return;
+
+    const targetPath = resolveTargetRoute(user?.role);
+    toast.success("Authentication successful!");
+    navigate(targetPath, { replace: true });
+  }, [authApplied, user?.role, navigate]);
 
   if (errorMessage) {
     return (
       <BlackjackErrorState
         variant="unauthorized"
-        code="OAUTH"
-        title="Social sign-in failed"
+        code="AUTH"
+        title="Authentication failed"
         message={errorMessage}
         fullScreen
         retryLabel="Back to login"
@@ -61,8 +79,8 @@ export function OAuth2CallbackPage() {
   return (
     <BlackjackLoader
       fullScreen
-      label="Completing sign-in"
-      sublabel="Syncing your table credentials..."
+      label="Completing authentication"
+      sublabel="Syncing your account session..."
     />
   );
 }

@@ -20,8 +20,16 @@ interface LocationState {
   };
 }
 
+function isAdminRole(role?: string | null): boolean {
+  return role?.trim().toUpperCase() === "ADMIN";
+}
+
+function getDefaultHomeForRole(role?: string | null): string {
+  return isAdminRole(role) ? "/admin" : "/rooms";
+}
+
 export function LoginPage() {
-  const { login } = useAuth();
+  const { user, login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const prefersReducedMotion = useReducedMotion();
@@ -46,25 +54,40 @@ export function LoginPage() {
 
   const currentEmail = watch("email");
 
-  const resolveDestination = (): string => {
+  const resolveDestination = (resolvedRole?: string | null): string => {
+    const effectiveRole = resolvedRole ?? user?.role;
+    const defaultRoute = getDefaultHomeForRole(effectiveRole);
     const state = location.state as LocationState | null;
-    if (state?.from) {
-      return `${state.from.pathname}${state.from.search ?? ""}${state.from.hash ?? ""}`;
+
+    if (state?.from?.pathname) {
+      const fromPath = state.from.pathname;
+      const isAdminPath = fromPath === "/admin" || fromPath.startsWith("/admin/");
+
+      if (!isAdminPath || isAdminRole(effectiveRole)) {
+        return `${fromPath}${state.from.search ?? ""}${state.from.hash ?? ""}`;
+      }
     }
-    return "/rooms";
+
+    return defaultRoute;
   };
 
   const onSubmit = async (values: LoginFormValues) => {
     setServerError(null);
     try {
-      await login(values);
-      navigate(resolveDestination(), { replace: true });
+      const authResult = await login(values);
+      const roleFromResponse =
+        (authResult as { user?: { role?: string | null }; role?: string | null } | undefined)
+          ?.user?.role ??
+        (authResult as { role?: string | null } | undefined)?.role ??
+        user?.role;
+
+      navigate(resolveDestination(roleFromResponse), { replace: true });
     } catch (err) {
       applyBackendFieldErrors(err, setError);
       setServerError(
         extractBackendMessage(
           err,
-          "Invalid credentials. Please check your email and password."
+          "Authentication failed. Please check your credentials and try again."
         )
       );
     }
@@ -75,7 +98,7 @@ export function LoginPage() {
       <div className="lg:col-span-6 xl:col-span-7 flex">
         <AuthBlackjackShowcase
           headline="Step back up to the felt."
-          subcopy="Sign in to access your chip balance, join live multiplayer tables, and chase natural 21."
+          subcopy="Access your chip balance, join live multiplayer tables, and manage your session."
           className="w-full"
         />
       </div>
@@ -89,7 +112,10 @@ export function LoginPage() {
         <div className="relative z-10 mx-auto w-full max-w-md">
           {/* Brand Header */}
           <div className="mb-6 flex items-center justify-between">
-            <BlackjackLogo size="sm" onClick={() => navigate("/rooms")} />
+            <BlackjackLogo
+              size="sm"
+              onClick={() => navigate(getDefaultHomeForRole(user?.role))}
+            />
           </div>
 
           {/* Auth Card */}
@@ -110,7 +136,7 @@ export function LoginPage() {
                   Welcome back
                 </h1>
                 <p className="text-sm text-neutral-400">
-                  Sign in with your account or OAuth provider to play.
+                  Continue with your account credentials or connected provider.
                 </p>
               </div>
 
@@ -223,16 +249,16 @@ export function LoginPage() {
                   ) : (
                     <LogIn className="h-4 w-4" />
                   )}
-                  <span>{isSubmitting ? "Signing in..." : "Sign In"}</span>
+                  <span>{isSubmitting ? "Continuing..." : "Continue"}</span>
                 </button>
               </form>
 
-              {/* Google & GitHub OAuth */}
+              {/* OAuth Providers */}
               <OAuthButtons mode="login" disabled={isSubmitting} />
 
               {/* Switch to Signup */}
               <p className="text-center text-xs text-neutral-400">
-                New to the table?{" "}
+                New here?{" "}
                 <Link
                   to="/signup"
                   className="font-semibold text-amber-300 transition hover:text-amber-200 hover:underline"
