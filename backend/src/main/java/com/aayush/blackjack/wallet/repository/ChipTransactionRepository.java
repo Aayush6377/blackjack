@@ -18,7 +18,7 @@ public interface ChipTransactionRepository extends JpaRepository<ChipTransaction
     List<ChipTransaction> findByUser_IdOrderByCreatedAtDesc(UUID userId);
 
     @Modifying
-    @Query("UPDATE ChipTransaction t SET t.dailyRewardClaim = null where t.dailyRewardClaim.id in :claimIds")
+    @Query("UPDATE ChipTransaction t SET t.dailyRewardClaim = null WHERE t.dailyRewardClaim.id IN :claimIds")
     void clearDailyRewardClaimReferences(@Param("claimIds") Collection<UUID> claimIds);
 
     @Modifying

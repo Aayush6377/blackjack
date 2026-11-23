@@ -58,4 +58,6 @@ public interface GameRoundRepository extends JpaRepository<GameRound, UUID> {
     @Modifying
     @Query("DELETE FROM GameRound r WHERE r.id IN :roundIds")
     void deleteAllByIdIn(@Param("roundIds") List<UUID> roundIds);
+
+    List<GameRound> findAllByRoom_Id(UUID roomId);
 }

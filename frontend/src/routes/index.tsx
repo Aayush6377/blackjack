@@ -17,6 +17,8 @@ import { AdminDashboardPage } from "../pages/admin/AdminDashboardPage";
 import AdminPlansPage from "../pages/admin/AdminPlansPage";
 import AdminRewardsPage from "../pages/admin/AdminRewardsPage";
 import AdminAuditLogsPage from "../pages/admin/AdminAuditLogsPage";
+import AdminRoomFormPage from "../pages/admin/AdminRoomFormPage";
+import AdminRoomsPage from "../pages/admin/AdminRoomsPage";
 
 export const router = createBrowserRouter([
   {
@@ -67,7 +69,9 @@ export const router = createBrowserRouter([
               { path: "plans", element: <AdminPlansPage /> },
               // { path: "users", element: <AdminUsersPage /> },
               { path: "rewards", element: <AdminRewardsPage /> },
-              // { path: "rooms", element: <AdminRoomsPage /> },
+              { path: "rooms", element: <AdminRoomsPage /> },
+              { path: "rooms/new", element: <AdminRoomFormPage /> },
+              { path: "rooms/:roomId/edit", element: <AdminRoomFormPage /> },
               { path: "audit-logs", element: <AdminAuditLogsPage /> },
             ],
           },

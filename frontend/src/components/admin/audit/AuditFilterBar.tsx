@@ -25,6 +25,8 @@ const ACTION_OPTIONS = [
   { label: "UPDATE", value: "UPDATE" },
   { label: "DELETE", value: "DELETE" },
   { label: "BULK_DELETE", value: "BULK_DELETE" },
+  { label: "ACTIVATE", value: "ACTIVATE" },
+  { label: "DEACTIVATE", value: "DEACTIVATE" },
 ] as const;
 
 const LIMIT_OPTIONS = [5, 10, 20, 50] as const;

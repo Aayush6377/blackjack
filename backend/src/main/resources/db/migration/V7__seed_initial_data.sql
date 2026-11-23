@@ -107,7 +107,7 @@ INSERT INTO game_rooms (
           'VIP High Roller Suite',
           'vip-high-roller',
           '6-deck Vegas-style shoe with massive limits for seasoned card sharks.',
-          'EXPERT',
+          'HIGH_ROLLER',
           10000,
           1000,
           25000,
