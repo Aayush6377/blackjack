@@ -19,6 +19,10 @@ import AdminRewardsPage from "../pages/admin/AdminRewardsPage";
 import AdminAuditLogsPage from "../pages/admin/AdminAuditLogsPage";
 import AdminRoomFormPage from "../pages/admin/AdminRoomFormPage";
 import AdminRoomsPage from "../pages/admin/AdminRoomsPage";
+import PlansPage from "../pages/user/PlansPage";
+import AdminCouponsPage from "../pages/admin/AdminCouponsPage";
+import WalletPage from "../pages/user/WalletPage";
+import PurchasesPage from "../pages/user/PurchasesPage";
 
 export const router = createBrowserRouter([
   {
@@ -47,10 +51,12 @@ export const router = createBrowserRouter([
             children: [
                 { path: "/rooms", element: <RoomsPage /> },
                 { path: "/rooms/:roomId", element: <RoomPlayPage /> },
+                { path: "/plans", element: <PlansPage /> },
                 { path: "/rewards/daily", element: <DailyRewardsPage /> },
                 { path: "/replays", element: <ReplaysPage /> },
                 { path: "/replays/:roundId", element: <RoundReplayPage /> },
-                // { path: "/wallet", element: <WalletPage /> },
+                { path: "/wallet", element: <WalletPage /> },
+                { path: "/purchases", element: <PurchasesPage/> }
                 // { path: "/profile", element: <ProfilePage /> },
             ]
           }
@@ -69,6 +75,7 @@ export const router = createBrowserRouter([
               { path: "plans", element: <AdminPlansPage /> },
               // { path: "users", element: <AdminUsersPage /> },
               { path: "rewards", element: <AdminRewardsPage /> },
+              { path: "coupons", element: <AdminCouponsPage/> },
               { path: "rooms", element: <AdminRoomsPage /> },
               { path: "rooms/new", element: <AdminRoomFormPage /> },
               { path: "rooms/:roomId/edit", element: <AdminRoomFormPage /> },

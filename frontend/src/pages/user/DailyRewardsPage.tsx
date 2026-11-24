@@ -37,6 +37,14 @@ export default function DailyRewardsPage() {
     }
   };
 
+  const handleBack = () => {
+    if (window.history.state && window.history.state.idx > 0) {
+      navigate(-1);
+    } else {
+      navigate("/rooms", { replace: true });
+    }
+  };
+
   return (
     <section className="min-h-screen bg-[radial-gradient(ellipse_at_top,_rgba(16,185,129,0.14),_transparent_55%),_#09090b] text-zinc-100">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-8 sm:px-6 lg:px-8">
@@ -45,11 +53,11 @@ export default function DailyRewardsPage() {
           <div>
             <button
               type="button"
-              onClick={() => navigate("/rooms")}
+              onClick={handleBack}
               className="mb-3 inline-flex cursor-pointer items-center gap-1.5 text-xs font-medium text-zinc-400 transition hover:text-amber-300"
             >
               <ArrowLeft className="h-3.5 w-3.5" />
-              <span>Back to Game Rooms</span>
+              <span>Back</span>
             </button>
 
             <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-amber-400">

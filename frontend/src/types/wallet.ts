@@ -7,6 +7,7 @@ export type TransactionType =
   | "SURRENDER_REFUND"
   | "CHIP_PURCHASE"
   | "REWARD_CLAIM"
+  | "COUPON_REWARD"
   | "ADMIN_ADJUSTMENT";
 
 export interface WalletSummary {

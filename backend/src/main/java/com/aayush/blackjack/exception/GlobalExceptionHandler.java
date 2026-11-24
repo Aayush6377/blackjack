@@ -18,6 +18,7 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -219,6 +220,31 @@ public class GlobalExceptionHandler {
                 request.getRequestURI()
         );
         return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
+    }
+
+    @ExceptionHandler(ResponseStatusException.class)
+    public ResponseEntity<ApiErrorResponse> handleResponseStatus(
+            ResponseStatusException ex,
+            HttpServletRequest request
+    ) {
+        int statusCode = ex.getStatusCode().value();
+        HttpStatus resolved = HttpStatus.resolve(statusCode);
+        String errorPhrase = resolved != null
+                ? resolved.getReasonPhrase()
+                : ex.getStatusCode().toString();
+
+        String message = (ex.getReason() != null && !ex.getReason().isBlank())
+                ? ex.getReason()
+                : errorPhrase;
+
+        ApiErrorResponse body = ApiErrorResponse.of(
+                statusCode,
+                errorPhrase,
+                message,
+                request.getRequestURI()
+        );
+
+        return ResponseEntity.status(ex.getStatusCode()).body(body);
     }
 
     @ExceptionHandler(Exception.class)

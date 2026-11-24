@@ -1,4 +1,4 @@
-import { Coins, FileSearch, Gift, Layers, LayoutDashboard, Users } from "lucide-react";
+import { Coins, FileSearch, Gift, Layers, LayoutDashboard, Ticket, Users } from "lucide-react";
 import type { AdminNavItem } from "./AdminSidebar";
 
 export const ADMIN_NAV_ITEMS: AdminNavItem[] = [
@@ -13,6 +13,12 @@ export const ADMIN_NAV_ITEMS: AdminNavItem[] = [
     to: "/admin/plans",
     icon: Coins,
     description: "Chip packs & sales",
+  },
+  {
+    label: "Coupons Management",
+    to: "/admin/coupons",
+    icon: Ticket,
+    description: "Promo codes & limits",
   },
   {
     label: "User Management",

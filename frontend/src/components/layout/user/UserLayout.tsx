@@ -1,7 +1,7 @@
 import { Outlet, useMatch } from "react-router-dom";
 import { UserNavbar } from "./UserNavbar";
 import { AppFooter } from "../../ui/AppFooter";
-
+import { DailyRewardReminderModal } from "../../rewards/DailyRewardReminderModal";
 
 export function UserLayout() {
   const isTableRoute = Boolean(useMatch("/rooms/:roomId"));
@@ -22,6 +22,7 @@ export function UserLayout() {
 
       {!isTableRoute && <AppFooter />}
 
+      <DailyRewardReminderModal />
     </div>
   );
 }

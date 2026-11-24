@@ -30,6 +30,7 @@ CREATE TABLE chip_transactions (
     game_round_id UUID,
     purchase_id UUID,
     daily_reward_claim_id UUID,
+    coupon_redemption_id UUID,
     type VARCHAR(50) NOT NULL,
     amount BIGINT NOT NULL,
     balance_after BIGINT NOT NULL,
@@ -44,7 +45,7 @@ CREATE INDEX idx_chip_txn_ref ON chip_transactions(reference_key);
 CREATE TABLE purchases (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL,
-    plan_id UUID NOT NULL,
+    plan_id UUID,
     plan_name VARCHAR(100) NOT NULL,
     chips_awarded BIGINT NOT NULL,
     amount_in_paise BIGINT NOT NULL,

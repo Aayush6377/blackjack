@@ -1,5 +1,6 @@
 package com.aayush.blackjack.wallet.entity;
 
+import com.aayush.blackjack.coupon.entity.CouponRedemption;
 import com.aayush.blackjack.game.entity.GameRound;
 import com.aayush.blackjack.payment.entity.Purchase;
 import com.aayush.blackjack.reward.entity.DailyRewardClaim;
@@ -42,6 +43,10 @@ public class ChipTransaction {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "daily_reward_claim_id", unique = true)
     private DailyRewardClaim dailyRewardClaim;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "coupon_redemption_id")
+    private CouponRedemption couponRedemption;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

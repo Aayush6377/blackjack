@@ -5,6 +5,8 @@ ALTER TABLE chip_transactions
         FOREIGN KEY (purchase_id) REFERENCES purchases(id) ON DELETE SET NULL,
     ADD CONSTRAINT fk_txn_daily_reward
         FOREIGN KEY (daily_reward_claim_id) REFERENCES daily_reward_claims(id) ON DELETE SET NULL,
+    ADD CONSTRAINT fk_txn_coupon_redemption
+        FOREIGN KEY (coupon_redemption_id) REFERENCES coupon_redemptions(id) ON DELETE SET NULL,
     ADD CONSTRAINT uk_txn_purchase UNIQUE (purchase_id),
     ADD CONSTRAINT uk_txn_daily_reward UNIQUE (daily_reward_claim_id);
 

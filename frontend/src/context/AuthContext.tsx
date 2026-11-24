@@ -29,6 +29,7 @@ export interface AuthContextValue {
   isLoading: boolean;
   walletBalance: number | null;
   isWalletLoading: boolean;
+  loginSessionId: string | null;
   refreshWallet: () => Promise<number | null>;
   setWalletBalanceFromSnapshot: (balance: number | null | undefined) => void;
   login: (payload: LoginRequest) => Promise<AuthResponse>;
@@ -43,6 +44,22 @@ export interface AuthContextValue {
 
 export const AuthContext = createContext<AuthContextValue | null>(null);
 
+const LOGIN_SESSION_STORAGE_KEY = "bjr_login_session_id";
+
+function createLoginSessionId(): string {
+  const id = `ls_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
+  sessionStorage.setItem(LOGIN_SESSION_STORAGE_KEY, id);
+  return id;
+}
+
+function getStoredLoginSessionId(): string | null {
+  return sessionStorage.getItem(LOGIN_SESSION_STORAGE_KEY);
+}
+
+function clearStoredLoginSessionId(): void {
+  sessionStorage.removeItem(LOGIN_SESSION_STORAGE_KEY);
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(() => tokenStorage.getUser());
   const [accessToken, setAccessToken] = useState<string | null>(() =>
@@ -51,21 +68,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [walletBalance, setWalletBalance] = useState<number | null>(null);
   const [isWalletLoading, setIsWalletLoading] = useState<boolean>(false);
+  const [loginSessionId, setLoginSessionId] = useState<string | null>(() => getStoredLoginSessionId());
 
   const applyAuthResponse = useCallback((response: AuthResponse) => {
-    tokenStorage.setAccessToken(response.accessToken);
-    setAccessToken(response.accessToken);
-    if (response.user) {
-      tokenStorage.setUser(response.user);
-      setUser(response.user);
-    }
-  }, []);
+      tokenStorage.setAccessToken(response.accessToken);
+      setAccessToken(response.accessToken);
+      setLoginSessionId(createLoginSessionId());
+
+      if (response.user) {
+        tokenStorage.setUser(response.user);
+        setUser(response.user);
+      }
+    }, []);
 
   const clearSession = useCallback(() => {
     tokenStorage.clear();
     setAccessToken(null);
     setUser(null);
     setWalletBalance(null);
+    setLoginSessionId(null);
+    clearStoredLoginSessionId();
   }, []);
 
   const refreshWallet = useCallback(async (): Promise<number | null> => {
@@ -149,6 +171,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     async (payload: LoginRequest) => {
       const res = await authService.login(payload);
       applyAuthResponse(res);
+      setLoginSessionId(createLoginSessionId())
       await refreshWallet();
       toast.success("Welcome back!");
       return res;
@@ -166,6 +189,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     async (payload: VerifyOtpRequest) => {
       const res = await authService.verifyEmailOtp(payload);
       applyAuthResponse(res);
+      setLoginSessionId(createLoginSessionId())
       await refreshWallet();
       toast.success("Email verified!");
       return res;
@@ -210,6 +234,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       isLoading,
       walletBalance,
       isWalletLoading,
+      loginSessionId,
       refreshWallet,
       setWalletBalanceFromSnapshot,
       login,
@@ -227,6 +252,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       isLoading,
       walletBalance,
       isWalletLoading,
+      loginSessionId,
       refreshWallet,
       setWalletBalanceFromSnapshot,
       login,

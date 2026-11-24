@@ -68,7 +68,7 @@ ON CONFLICT (id) DO NOTHING;
 INSERT INTO game_rooms (
     id, name, slug, description, difficulty,
     min_wallet, min_bet, max_bet, decks_per_shoe, reshuffle_threshold,
-    blackjack_payout, dealer_hits_soft_17, active, display_order
+    blackjack_payout, dealer_hits_soft_17, active, display_order, thumbnail_url
 ) VALUES
       (
           '33333333-3333-3333-3333-333333333301',
@@ -84,7 +84,8 @@ INSERT INTO game_rooms (
           '3:2',
           TRUE,
           TRUE,
-          1
+          1,
+          'https://shazamcasino.com/blog_pages/double-deck-blackjack/Image4.jpg'
       ),
       (
           '33333333-3333-3333-3333-333333333302',
@@ -100,7 +101,8 @@ INSERT INTO game_rooms (
           '3:2',
           TRUE,
           TRUE,
-          2
+          2,
+          'https://a.storyblok.com/f/161938/1200x675/cae334e271/guide-to-using-blackjack-charts.jpg'
       ),
       (
           '33333333-3333-3333-3333-333333333303',
@@ -114,9 +116,10 @@ INSERT INTO game_rooms (
           6,
           0.75,
           '3:2',
-          FALSE, -- Dealer stands on Soft 17
+          FALSE,
           TRUE,
-          3
+          3,
+          'https://top-comparatif.com/wp-content/uploads/2023/01/casino-black-jack-table-1.jpg'
       )
 ON CONFLICT (slug) DO NOTHING;
 

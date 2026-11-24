@@ -11,5 +11,6 @@ public enum TransactionType {
 
     CHIP_PURCHASE,
     REWARD_CLAIM,
+    COUPON_REWARD,
     ADMIN_ADJUSTMENT
 }

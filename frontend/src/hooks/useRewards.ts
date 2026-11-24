@@ -14,11 +14,12 @@ export const rewardKeys = {
   adminConfigs: () => [...rewardKeys.all, "admin", "configs"] as const,
 };
 
-export function useDailyRewardStatus() {
+export function useDailyRewardStatus(options?: { enabled?: boolean }) {
   return useQuery({
     queryKey: rewardKeys.dailyStatus(),
     queryFn: () => rewardService.getDailyRewardStatus(),
     staleTime: 30_000,
+    enabled: options?.enabled ?? true,
   });
 }
 

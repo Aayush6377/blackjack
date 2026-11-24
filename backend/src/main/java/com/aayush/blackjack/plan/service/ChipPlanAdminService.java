@@ -1,6 +1,7 @@
 package com.aayush.blackjack.plan.service;
 
 import com.aayush.blackjack.admin.service.AdminAuditService;
+import com.aayush.blackjack.payment.repository.PurchaseRepository;
 import com.aayush.blackjack.plan.dto.ChipPlanResponse;
 import com.aayush.blackjack.plan.dto.CreateChipPlanRequest;
 import com.aayush.blackjack.plan.dto.UpdateChipPlanRequest;
@@ -29,6 +30,7 @@ public class ChipPlanAdminService {
 
     private final ChipPlanRepository chipPlanRepository;
     private final AdminAuditService adminAuditService;
+    private final PurchaseRepository purchaseRepository;
 
     @Transactional(readOnly = true)
     @Caching(cacheable = {@Cacheable(cacheNames = "plans", key = "'admin:all'")})
@@ -168,6 +170,8 @@ public class ChipPlanAdminService {
     public void deletePlan(UUID planId) {
         ChipPlan plan = findPlanOrThrow(planId);
         Map<String, Object> oldValues = snapshotPlan(plan);
+
+        purchaseRepository.detachPlanFromPurchases(planId);
 
         chipPlanRepository.delete(plan);
         chipPlanRepository.flush();

@@ -1,5 +1,6 @@
 package com.aayush.blackjack.wallet.service;
 
+import com.aayush.blackjack.common.dto.PageResponse;
 import com.aayush.blackjack.game.entity.GameRound;
 import com.aayush.blackjack.security.service.CurrentUserService;
 import com.aayush.blackjack.user.entity.User;
@@ -11,12 +12,13 @@ import com.aayush.blackjack.wallet.enums.TransactionType;
 import com.aayush.blackjack.wallet.repository.ChipTransactionRepository;
 import com.aayush.blackjack.wallet.repository.ChipWalletRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -39,12 +41,19 @@ public class WalletService {
     }
 
     @Transactional(readOnly = true)
-    public List<ChipTransactionResponse> getTransactionHistory() {
+    public PageResponse<ChipTransactionResponse> getTransactionHistory(int page, int limit) {
         UUID userId = currentUserService.getCurrentUserId();
-        return chipTransactionRepository.findByUser_IdOrderByCreatedAtDesc(userId)
-                .stream()
-                .map(ChipTransactionResponse::from)
-                .toList();
+        int safePage = Math.max(page, 0);
+        int safeLimit = Math.min(Math.max(limit, 1), 100);
+
+        Pageable pageable = PageRequest.of(
+                safePage,
+                safeLimit,
+                Sort.by(Sort.Direction.DESC, "createdAt")
+        );
+
+        Page<ChipTransaction> txPage = chipTransactionRepository.findByUser_IdOrderByCreatedAtDesc(userId, pageable);
+        return PageResponse.from(txPage, ChipTransactionResponse::from);
     }
 
     @Transactional

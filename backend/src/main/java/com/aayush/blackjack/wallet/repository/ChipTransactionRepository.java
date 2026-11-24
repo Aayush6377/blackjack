@@ -1,6 +1,8 @@
 package com.aayush.blackjack.wallet.repository;
 
 import com.aayush.blackjack.wallet.entity.ChipTransaction;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -15,7 +17,7 @@ public interface ChipTransactionRepository extends JpaRepository<ChipTransaction
 
     Optional<ChipTransaction> findByReferenceKey(String referenceKey);
 
-    List<ChipTransaction> findByUser_IdOrderByCreatedAtDesc(UUID userId);
+    Page<ChipTransaction> findByUser_IdOrderByCreatedAtDesc(UUID userId, Pageable pageable);
 
     @Modifying
     @Query("UPDATE ChipTransaction t SET t.dailyRewardClaim = null WHERE t.dailyRewardClaim.id IN :claimIds")
@@ -24,4 +26,6 @@ public interface ChipTransactionRepository extends JpaRepository<ChipTransaction
     @Modifying
     @Query("UPDATE ChipTransaction ct SET ct.gameRound = null WHERE ct.gameRound.id IN :roundIds")
     void clearGameRoundByRoundIds(@Param("roundIds") List<UUID> roundIds);
+
+    boolean existsByReferenceKey(String referenceKey);
 }

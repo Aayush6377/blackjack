@@ -1,5 +1,6 @@
 package com.aayush.blackjack.wallet.controller;
 
+import com.aayush.blackjack.common.dto.PageResponse;
 import com.aayush.blackjack.wallet.dto.ChipTransactionResponse;
 import com.aayush.blackjack.wallet.dto.WalletSummaryResponse;
 import com.aayush.blackjack.wallet.entity.ChipWallet;
@@ -8,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -26,8 +28,10 @@ public class WalletController {
     }
 
     @GetMapping("/transactions")
-    public ResponseEntity<List<ChipTransactionResponse>> getMyTransactions() {
-        List<ChipTransactionResponse> history = walletService.getTransactionHistory();
-        return ResponseEntity.ok(history);
+    public ResponseEntity<PageResponse<ChipTransactionResponse>> getMyTransactions(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int limit
+    ) {
+        return ResponseEntity.ok(walletService.getTransactionHistory(page, limit));
     }
 }

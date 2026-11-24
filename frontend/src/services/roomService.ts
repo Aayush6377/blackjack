@@ -1,8 +1,10 @@
 import type z from "zod";
 import { apiClient } from "../lib/apiClient";
-import type { AdminGameRoom, AdminRoomUnlockRule, CreateGameRoomPayload, CreateRoomUnlockRulePayload, RoomSummary, UpdateGameRoomActivePayload, UpdateGameRoomPayload, UpdateRoomUnlockRulePayload } from "../types/room";
+import type { AdminGameRoom, AdminRoomUnlockRule, CreateGameRoomPayload, CreateRoomUnlockRulePayload, 
+  RoomSummary, UpdateGameRoomActivePayload, UpdateGameRoomPayload, UpdateRoomUnlockRulePayload } from "../types/room";
 import { extractBackendMessage } from "../utils/apiError";
-import { adminGameRoomListSchema, adminGameRoomSchema, adminRoomUnlockRuleListSchema, adminRoomUnlockRuleSchema, updateGameRoomActiveSchema } from "../schema/room.schema";
+import { adminGameRoomListSchema, adminGameRoomSchema, adminRoomUnlockRuleListSchema, 
+  adminRoomUnlockRuleSchema, updateGameRoomActiveSchema } from "../schema/room.schema";
 
 const ADMIN_ROOMS_BASE = "/admin/rooms";
 
