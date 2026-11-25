@@ -5,6 +5,7 @@ import com.aayush.blackjack.game.dto.GameStateSnapshot;
 import com.aayush.blackjack.game.dto.InsuranceCommand;
 import com.aayush.blackjack.game.dto.StartRoundRequest;
 import com.aayush.blackjack.game.engine.BlackjackEngineFacade;
+import com.aayush.blackjack.game.engine.hand.HandEvaluation;
 import com.aayush.blackjack.game.engine.hand.HandEvaluator;
 import com.aayush.blackjack.game.engine.rules.PlayerActionType;
 import com.aayush.blackjack.game.engine.rules.RoomRules;
@@ -259,15 +260,24 @@ public class GameService {
             }
         }
 
+        if (command.action() == PlayerActionType.SPLIT) {
+            targetHand.setFromSplit(true);
+        }
+
+        boolean isSplitHand = Boolean.TRUE.equals(targetHand.getFromSplit());
+        HandEvaluation targetEval = HandEvaluator.evaluate(result.updatedHandCards(), isSplitHand);
+
         targetHand.setCards(new ArrayList<>(result.updatedHandCards()));
-        targetHand.setHandValue(result.evaluation().total());
+        targetHand.setHandValue(targetEval.total());
 
         if (command.action() == PlayerActionType.SURRENDER) {
             targetHand.setStatus(HandStatus.SURRENDERED);
-        } else if (result.evaluation().busted()) {
+        } else if (targetEval.busted()) {
             targetHand.setStatus(HandStatus.BUSTED);
-        } else if (result.handEnded() || result.evaluation().isTwentyOne()) {
-            targetHand.setStatus(HandStatus.STOOD);
+        } else if (result.handEnded() || targetEval.isTwentyOne()) {
+            targetHand.setStatus(
+                    targetEval.blackjack() ? HandStatus.BLACKJACK : HandStatus.STOOD
+            );
         }
         gameHandRepository.save(targetHand);
 
@@ -278,6 +288,7 @@ public class GameService {
             splitHand.setHandNumber(allHands.size() + 1);
             splitHand.setCards(new ArrayList<>(result.spawnedHandCards()));
             splitHand.setBetAmount(targetHand.getBetAmount());
+            splitHand.setFromSplit(true);
             splitHand.setHandValue(spawnedEval.total());
             if (spawnedEval.busted()) {
                 splitHand.setStatus(HandStatus.BUSTED);

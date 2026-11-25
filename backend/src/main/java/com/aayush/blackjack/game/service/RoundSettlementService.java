@@ -1,6 +1,7 @@
 package com.aayush.blackjack.game.service;
 
 import com.aayush.blackjack.game.engine.BlackjackEngineFacade;
+import com.aayush.blackjack.game.engine.hand.HandEvaluation;
 import com.aayush.blackjack.game.engine.hand.HandEvaluator;
 import com.aayush.blackjack.game.engine.rules.RoomRules;
 import com.aayush.blackjack.game.engine.settlement.HandOutcome;
@@ -55,15 +56,21 @@ public class RoundSettlementService {
         long insuranceBetPerHand = insurancePlaced ? round.getInsuranceBet() : 0L;
 
         List<BlackjackEngineFacade.PlayerHandSnapshot> snapshots = hands.stream()
-                .map(h -> new BlackjackEngineFacade.PlayerHandSnapshot(
-                        HandEvaluator.evaluate(h.getCards(), h.getHandNumber() > 1),
-                        h.getStatus() == HandStatus.SURRENDERED,
-                        h.getStatus() == HandStatus.BUSTED,
-                        h.getStatus() == HandStatus.BLACKJACK,
-                        h.getBetAmount(),
-                        insurancePlaced,
-                        insuranceBetPerHand
-                ))
+                .map(h -> {
+                    boolean isFromSplit = Boolean.TRUE.equals(h.getFromSplit());
+                    HandEvaluation eval = HandEvaluator.evaluate(h.getCards(), isFromSplit);
+                    boolean isNaturalBlackjack = !isFromSplit && h.getStatus() == HandStatus.BLACKJACK;
+
+                    return new BlackjackEngineFacade.PlayerHandSnapshot(
+                            eval,
+                            h.getStatus() == HandStatus.SURRENDERED,
+                            h.getStatus() == HandStatus.BUSTED,
+                            isNaturalBlackjack,
+                            h.getBetAmount(),
+                            insurancePlaced,
+                            insuranceBetPerHand
+                    );
+                })
                 .toList();
 
         BlackjackEngineFacade.RoundSettlementResult settlement = BlackjackEngineFacade.settleRound(

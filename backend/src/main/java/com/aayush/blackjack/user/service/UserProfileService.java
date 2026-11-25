@@ -12,6 +12,9 @@ import com.aayush.blackjack.user.entity.User;
 import com.aayush.blackjack.user.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -36,10 +39,19 @@ public class UserProfileService {
 
     @Transactional(readOnly = true)
     public UserProfileResponse getCurrentProfile() {
-        User user = currentUserService.getCurrentUser();
+        UUID userId = currentUserService.getCurrentUserId();
+        return getProfileById(userId);
+    }
+
+    @Cacheable(cacheNames = "user-profile", key = "#userId")
+    @Transactional(readOnly = true)
+    public UserProfileResponse getProfileById(UUID userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
         return UserProfileResponse.from(user);
     }
 
+    @CachePut(cacheNames = "user-profile", key = "#result.id()")
     @Transactional
     public UserProfileResponse updateProfile(UpdateProfileRequest request) {
         User user = currentUserService.getCurrentUser();
@@ -121,6 +133,8 @@ public class UserProfileService {
         user.setTokenVersion((user.getTokenVersion() == null ? 0 : user.getTokenVersion()) + 1);
         userRepository.save(user);
 
+        evictUserProfileCache(userId);
+
         refreshTokenService.revokeAllUserTokens(user);
 
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
@@ -131,6 +145,9 @@ public class UserProfileService {
                 new AccountDeletionRequestedEvent(userId, normalizedEmail, imagePublicId)
         );
     }
+
+    @CacheEvict(cacheNames = "user-profile", key = "#userId")
+    public void evictUserProfileCache(UUID userId) {}
 
     private void removeImage(User user){
         String publicId = user.getProfileImagePublicId();

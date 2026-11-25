@@ -50,6 +50,9 @@ public class GameHand {
     @Column(nullable = false, length = 50)
     private HandStatus status = HandStatus.ACTIVE;
 
+    @Column(nullable = false)
+    private Boolean fromSplit = false;
+
     @Enumerated(EnumType.STRING)
     @Column(length = 50)
     private HandOutcome outcome;

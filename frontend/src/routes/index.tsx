@@ -27,6 +27,13 @@ import AdminUsersPage from "../pages/admin/AdminUsersPage";
 import AdminUserDetailPage from "../pages/admin/AdminUserDetailPage";
 import ProfilePage from "../pages/user/ProfilePage";
 import AdminProfilePage from "../pages/admin/AdminProfilePage";
+import SupportPage from "../pages/user/SupportPage";
+import AdminSupportTicketsPage from "../pages/admin/AdminSupportTicketsPage";
+import { GuestLayout } from "../components/layout/guest/GuestLayout";
+import GameRulesPage from "../pages/guest/GameRulesPage";
+import TermsPage from "../pages/guest/TermsPage";
+import AboutDeveloperPage from "../pages/guest/AboutDeveloperPage";
+import ArchitecturePage from "../pages/guest/ArchitecturePage";
 
 export const router = createBrowserRouter([
   {
@@ -44,6 +51,15 @@ export const router = createBrowserRouter([
           { path: "/login", element: <LoginPage /> },
           { path: "/signup", element: <SignupPage /> },
           { path: "/oauth2/callback", element: <OAuth2CallbackPage /> },
+          {
+            element: <GuestLayout />,
+            children: [
+              { path: "/rules", element: <GameRulesPage /> },
+              { path: "/architecture", element: <ArchitecturePage /> },
+              { path: "/terms", element: <TermsPage /> },
+              { path: "/about", element: <AboutDeveloperPage /> },
+            ],
+          },
         ],
       },
 
@@ -61,7 +77,8 @@ export const router = createBrowserRouter([
                 { path: "/replays/:roundId", element: <RoundReplayPage /> },
                 { path: "/wallet", element: <WalletPage /> },
                 { path: "/purchases", element: <PurchasesPage/> },
-                { path: "/profile", element: <ProfilePage /> }
+                { path: "/profile", element: <ProfilePage /> },
+                { path: "/support", element: <SupportPage /> }
             ]
           }
         ],
@@ -85,7 +102,8 @@ export const router = createBrowserRouter([
               { path: "rooms/new", element: <AdminRoomFormPage /> },
               { path: "rooms/:roomId/edit", element: <AdminRoomFormPage /> },
               { path: "audit-logs", element: <AdminAuditLogsPage /> },
-              { path: "profile", element: <AdminProfilePage /> }
+              { path: "profile", element: <AdminProfilePage /> },
+              { path: "support", element: <AdminSupportTicketsPage /> }
             ],
           },
         ],

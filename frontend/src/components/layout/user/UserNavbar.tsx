@@ -4,10 +4,10 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import {
   Coins,
   Layers,
+  LifeBuoy,
   LogOut,
   Menu,
   Shield,
-  UserCircle2,
   X,
 } from "lucide-react";
 import { BlackjackLogo } from "../../ui/BlackjackLogo";
@@ -27,7 +27,7 @@ export interface UserNavbarProps {
 const USER_NAV_ITEMS: NavItem[] = [
   { label: "Rooms", to: "/rooms", icon: Layers },
   { label: "Wallet", to: "/wallet", icon: Coins },
-  { label: "Profile", to: "/profile", icon: UserCircle2 },
+  { label: "Support", to: "/support", icon: LifeBuoy },
 ];
 
 export function UserNavbar({ balance }: UserNavbarProps) {

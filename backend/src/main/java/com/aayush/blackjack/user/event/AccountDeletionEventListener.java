@@ -11,6 +11,7 @@ import com.aayush.blackjack.media.service.MediaStorageService;
 import com.aayush.blackjack.payment.repository.PaymentAttemptRepository;
 import com.aayush.blackjack.reward.repository.DailyRewardClaimRepository;
 import com.aayush.blackjack.room.repository.RoomProgressRepository;
+import com.aayush.blackjack.support.repository.SupportTicketRepository;
 import com.aayush.blackjack.user.dto.AccountDeletionRequestedEvent;
 import com.aayush.blackjack.user.entity.User;
 import com.aayush.blackjack.user.repository.UserRepository;
@@ -48,6 +49,7 @@ public class AccountDeletionEventListener {
     private final GameRoundRepository gameRoundRepository;
     private final GameShoeRepository gameShoeRepository;
     private final PaymentAttemptRepository paymentAttemptRepository;
+    private final SupportTicketRepository supportTicketRepository;
 
     @Async
     @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -74,6 +76,7 @@ public class AccountDeletionEventListener {
             dailyRewardClaimRepository.deleteByUser_Id(userId);
             couponRedemptionRepository.deleteByUser_Id(userId);
             paymentAttemptRepository.deleteAllByUserId(userId);
+            supportTicketRepository.deleteByUser_Id(userId);
 
             chipTransactionRepository.deleteByUser_Id(userId);
             chipWalletRepository.deleteByUser_Id(userId);

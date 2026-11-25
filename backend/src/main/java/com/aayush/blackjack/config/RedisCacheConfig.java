@@ -1,6 +1,7 @@
 package com.aayush.blackjack.config;
 
 import com.aayush.blackjack.plan.dto.ChipPlanResponse;
+import com.aayush.blackjack.user.dto.UserProfileResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
@@ -25,6 +26,7 @@ public class RedisCacheConfig {
         Map<String, RedisCacheConfiguration> configs = new LinkedHashMap<>();
 
         configs.put("plans", plansCacheConfig(defaultRedisCacheConfig));
+        configs.put("user-profile", userProfileCacheConfig(defaultRedisCacheConfig));
 
         return configs;
     }
@@ -40,6 +42,18 @@ public class RedisCacheConfig {
                 .entryTtl(Duration.ofMinutes(15))
                 .serializeValuesWith(
                         RedisSerializationContext.SerializationPair.fromSerializer(planListSerializer)
+                );
+    }
+
+    private RedisCacheConfiguration userProfileCacheConfig(RedisCacheConfiguration defaultConfig) {
+        JsonMapper profileMapper = JsonMapper.builder().findAndAddModules().build();
+        JacksonJsonRedisSerializer<UserProfileResponse> profileSerializer =
+                new JacksonJsonRedisSerializer<>(profileMapper, UserProfileResponse.class);
+
+        return defaultConfig
+                .entryTtl(Duration.ofMinutes(10))
+                .serializeValuesWith(
+                        RedisSerializationContext.SerializationPair.fromSerializer(profileSerializer)
                 );
     }
 }
