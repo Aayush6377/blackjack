@@ -24,4 +24,14 @@ public interface PurchaseRepository extends JpaRepository<Purchase, UUID> {
     int detachPlanFromPurchases(@Param("planId") UUID planId);
 
     Page<Purchase> findByUser_IdOrderByCreatedAtDesc(UUID userId, Pageable pageable);
+
+    long countByUser_Id(UUID userId);
+
+    @Query("""
+        SELECT COALESCE(SUM(p.amountInPaise), 0)
+        FROM Purchase p
+        WHERE p.user.id = :userId
+          AND p.status = com.aayush.blackjack.payment.enums.PurchaseStatus.SUCCESS
+        """)
+    long sumSuccessfulAmountInPaiseByUserId(@Param("userId") UUID userId);
 }

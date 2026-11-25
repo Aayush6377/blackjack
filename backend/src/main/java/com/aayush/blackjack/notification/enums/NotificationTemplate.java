@@ -7,7 +7,9 @@ public enum NotificationTemplate {
     VERIFY_EMAIL("email/verify-email", "Verify Your Blackjack Royale Account"),
     RESET_PASSWORD("email/reset-password", "Reset Your Blackjack Royale Password"),
     WELCOME("email/welcome", "Welcome to Blackjack Royale!"),
-    PURCHASE_RECEIPT("email/purchase-receipt", "Chip Purchase Confirmation");
+    PURCHASE_RECEIPT("email/purchase-receipt", "Chip Purchase Confirmation"),
+    ADMIN_CHIP_ADJUSTMENT("email/admin-chip-adjustment", "Chips Credited to Your Wallet"),
+    DELETE_ACCOUNT("email/delete-account", "Confirm Permanent Account Deletion");
 
     private final String templatePath;
     private final String defaultSubject;

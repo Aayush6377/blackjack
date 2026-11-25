@@ -54,6 +54,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 if (user != null && claimVersion != null
                         && Boolean.TRUE.equals(user.getEnabled())
+                        && Boolean.FALSE.equals(user.getDeleted())
                         && Objects.equals(user.getTokenVersion().longValue(), claimVersion)
                 ){
                     UserPrincipal principal = new UserPrincipal(user);

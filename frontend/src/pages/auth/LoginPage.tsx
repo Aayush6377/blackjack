@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion, useReducedMotion } from "motion/react";
@@ -12,14 +12,6 @@ import { useAuth } from "../../hooks/useAuth";
 import { loginSchema, type LoginFormValues } from "../../schema/auth.schema";
 import { applyBackendFieldErrors, extractBackendMessage } from "../../utils/apiError";
 
-interface LocationState {
-  from?: {
-    pathname: string;
-    search?: string;
-    hash?: string;
-  };
-}
-
 function isAdminRole(role?: string | null): boolean {
   return role?.trim().toUpperCase() === "ADMIN";
 }
@@ -31,7 +23,6 @@ function getDefaultHomeForRole(role?: string | null): string {
 export function LoginPage() {
   const { user, login } = useAuth();
   const navigate = useNavigate();
-  const location = useLocation();
   const prefersReducedMotion = useReducedMotion();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -56,19 +47,7 @@ export function LoginPage() {
 
   const resolveDestination = (resolvedRole?: string | null): string => {
     const effectiveRole = resolvedRole ?? user?.role;
-    const defaultRoute = getDefaultHomeForRole(effectiveRole);
-    const state = location.state as LocationState | null;
-
-    if (state?.from?.pathname) {
-      const fromPath = state.from.pathname;
-      const isAdminPath = fromPath === "/admin" || fromPath.startsWith("/admin/");
-
-      if (!isAdminPath || isAdminRole(effectiveRole)) {
-        return `${fromPath}${state.from.search ?? ""}${state.from.hash ?? ""}`;
-      }
-    }
-
-    return defaultRoute;
+    return getDefaultHomeForRole(effectiveRole);
   };
 
   const onSubmit = async (values: LoginFormValues) => {

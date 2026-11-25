@@ -3,7 +3,7 @@ import { ImageIcon, Pencil, Trash2 } from "lucide-react";
 import {
   RoomMediaPickerModal,
   type MediaSelectionDraft,
-} from "./RoomMediaPickerModal";
+} from "../../ui/RoomMediaPickerModal";
 
 export interface RoomMediaFieldState {
   previewUrl: string | null;

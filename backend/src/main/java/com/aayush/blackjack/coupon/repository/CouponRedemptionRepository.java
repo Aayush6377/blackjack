@@ -18,4 +18,6 @@ public interface CouponRedemptionRepository extends JpaRepository<CouponRedempti
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("UPDATE CouponRedemption r SET r.coupon = null WHERE r.coupon.id = :couponId")
     int detachCouponFromRedemptions(@Param("couponId") UUID couponId);
+
+    void deleteByUser_Id(UUID userId);
 }

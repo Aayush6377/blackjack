@@ -28,4 +28,6 @@ public interface ChipTransactionRepository extends JpaRepository<ChipTransaction
     void clearGameRoundByRoundIds(@Param("roundIds") List<UUID> roundIds);
 
     boolean existsByReferenceKey(String referenceKey);
+
+    void deleteByUser_Id(UUID userId);
 }

@@ -11,4 +11,6 @@ import java.util.UUID;
 public interface OAuthAccountRepository extends JpaRepository<OAuthAccount, UUID> {
     @EntityGraph(attributePaths = {"user"})
     Optional<OAuthAccount> findByProviderAndProviderUserId(AuthProvider provider, String providerUserId);
+
+    void deleteByUser_Id(UUID userId);
 }

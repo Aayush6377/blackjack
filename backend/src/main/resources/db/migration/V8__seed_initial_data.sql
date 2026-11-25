@@ -5,7 +5,7 @@ INSERT INTO users (
     '11111111-1111-1111-1111-111111111111',
     'Platform Admin',
     'admin@blackjack.com',
-    '$2y$10$E/Qaay/8upXkzOQivswrx.i9qy/DkCljpmBCfZZpLIDCo.SZnNybO',
+    '$2a$10$Z5tbn4ySMjXU.U..3fXQC.IVb2v.TQAH8XHsU.GScbK/bi9Jc5y36',
     'ADMIN',
     0,
     TRUE,

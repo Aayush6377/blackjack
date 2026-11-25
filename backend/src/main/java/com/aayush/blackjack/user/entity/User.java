@@ -48,6 +48,11 @@ public class User {
     @Column(nullable = false)
     private Boolean enabled = true;
 
+    @Column(nullable = false)
+    private Boolean deleted = false;
+
+    private Instant deletedAt;
+
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
     private Instant createdAt;

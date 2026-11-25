@@ -17,6 +17,9 @@ function getActionBadgeStyle(action: string): string {
   if (normalized.startsWith("BULK_CREATE") || normalized.startsWith("CREATE")) {
     return "border-emerald-500/35 bg-emerald-950/55 text-emerald-300";
   }
+  if (normalized.startsWith("USER_CHIPS")) {
+    return "border-sky-500/35 bg-sky-950/55 text-sky-300";
+  }
   if (normalized.startsWith("UPDATE") || normalized.startsWith("TOGGLE")) {
     return "border-amber-400/35 bg-amber-500/15 text-amber-300";
   }

@@ -23,6 +23,10 @@ import PlansPage from "../pages/user/PlansPage";
 import AdminCouponsPage from "../pages/admin/AdminCouponsPage";
 import WalletPage from "../pages/user/WalletPage";
 import PurchasesPage from "../pages/user/PurchasesPage";
+import AdminUsersPage from "../pages/admin/AdminUsersPage";
+import AdminUserDetailPage from "../pages/admin/AdminUserDetailPage";
+import ProfilePage from "../pages/user/ProfilePage";
+import AdminProfilePage from "../pages/admin/AdminProfilePage";
 
 export const router = createBrowserRouter([
   {
@@ -56,8 +60,8 @@ export const router = createBrowserRouter([
                 { path: "/replays", element: <ReplaysPage /> },
                 { path: "/replays/:roundId", element: <RoundReplayPage /> },
                 { path: "/wallet", element: <WalletPage /> },
-                { path: "/purchases", element: <PurchasesPage/> }
-                // { path: "/profile", element: <ProfilePage /> },
+                { path: "/purchases", element: <PurchasesPage/> },
+                { path: "/profile", element: <ProfilePage /> }
             ]
           }
         ],
@@ -73,13 +77,15 @@ export const router = createBrowserRouter([
               { index: true, element: <Navigate to="/admin/overview" replace /> },
               { path: "overview", element: <AdminDashboardPage /> },
               { path: "plans", element: <AdminPlansPage /> },
-              // { path: "users", element: <AdminUsersPage /> },
+              { path: "users", element: <AdminUsersPage /> },
+              { path: "users/:userId", element: <AdminUserDetailPage /> },
               { path: "rewards", element: <AdminRewardsPage /> },
               { path: "coupons", element: <AdminCouponsPage/> },
               { path: "rooms", element: <AdminRoomsPage /> },
               { path: "rooms/new", element: <AdminRoomFormPage /> },
               { path: "rooms/:roomId/edit", element: <AdminRoomFormPage /> },
               { path: "audit-logs", element: <AdminAuditLogsPage /> },
+              { path: "profile", element: <AdminProfilePage /> }
             ],
           },
         ],

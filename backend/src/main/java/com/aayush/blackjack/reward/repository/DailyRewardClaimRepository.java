@@ -18,4 +18,6 @@ public interface DailyRewardClaimRepository extends JpaRepository<DailyRewardCla
     boolean existsByUser_IdAndRewardDate(UUID userId, LocalDate today);
 
     List<DailyRewardClaim> findAllByRewardConfig_Id(UUID rewardConfigId);
+
+    void deleteByUser_Id(UUID userId);
 }

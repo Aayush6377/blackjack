@@ -19,4 +19,6 @@ public interface RoomProgressRepository extends JpaRepository<RoomProgress, UUID
     @Modifying
     @Query("DELETE FROM RoomProgress rp WHERE rp.room.id = :roomId")
     void deleteAllByRoomId(@Param("roomId") UUID roomId);
+
+    void deleteByUser_Id(UUID userId);
 }

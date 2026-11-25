@@ -24,4 +24,6 @@ public interface GameShoeRepository extends JpaRepository<GameShoe, UUID> {
     );
 
     void deleteAllByRoom_Id(UUID roomId);
+
+    void deleteByUser_Id(UUID userId);
 }

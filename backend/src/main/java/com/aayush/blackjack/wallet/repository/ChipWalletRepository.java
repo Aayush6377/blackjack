@@ -20,4 +20,6 @@ public interface ChipWalletRepository extends JpaRepository<ChipWallet, UUID> {
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT w FROM ChipWallet w WHERE w.user.id = :userId")
     Optional<ChipWallet> findLockedByUserId(@Param("userId") UUID userId);
+
+    void deleteByUser_Id(UUID userId);
 }

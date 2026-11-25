@@ -6,7 +6,8 @@ import lombok.Getter;
 @Getter
 public enum OtpPurpose {
     EMAIL_VERIFICATION("blackjack:otp:verify:", NotificationTemplate.VERIFY_EMAIL),
-    PASSWORD_RESET("blackjack:otp:reset:", NotificationTemplate.RESET_PASSWORD);
+    PASSWORD_RESET("blackjack:otp:reset:", NotificationTemplate.RESET_PASSWORD),
+    ACCOUNT_DELETE("blackjack:otp:delete:", NotificationTemplate.DELETE_ACCOUNT);
 
     private final String redisPrefix;
     private final NotificationTemplate template;

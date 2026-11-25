@@ -41,7 +41,7 @@ function SidebarPanel({ onNavigate }: SidebarPanelProps) {
 
   const handleOpenProfile = () => {
     onNavigate?.();
-    navigate("/profile");
+    navigate("/admin/profile");
   };
 
   return (

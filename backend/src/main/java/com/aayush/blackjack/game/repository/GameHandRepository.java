@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -16,4 +17,9 @@ public interface GameHandRepository extends JpaRepository<GameHand, UUID> {
     @Modifying
     @Query("DELETE FROM GameHand h WHERE h.gameRound.id IN :roundIds")
     void deleteAllByRoundIds(@Param("roundIds") List<UUID> roundIds);
+
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM GameHand gh WHERE gh.gameRound.user.id = :userId")
+    void deleteAllByUserId(@Param("userId") UUID userId);
 }
