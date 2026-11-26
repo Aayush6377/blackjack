@@ -52,12 +52,13 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         String accessToken = jwtService.generateAccessToken(user);
         String rawRefreshToken = refreshTokenService.createRefreshToken(user);
 
+        String sameSite = secureCookie ? "None" : "Lax";
         ResponseCookie refreshCookie = ResponseCookie.from("refresh_token", rawRefreshToken)
                 .httpOnly(true)
                 .secure(secureCookie)
                 .path("/api/v1/auth")
                 .maxAge(Duration.ofDays(7))
-                .sameSite("Lax")
+                .sameSite(sameSite)
                 .build();
         response.addHeader(HttpHeaders.SET_COOKIE, refreshCookie.toString());
 

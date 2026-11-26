@@ -86,12 +86,13 @@ public class UserProfileController {
     }
 
     private void clearRefreshCookie(HttpServletResponse response) {
+        String sameSite = secureCookie ? "None" : "Lax";
         ResponseCookie cookie = ResponseCookie.from("refresh_token", "")
                 .httpOnly(true)
                 .secure(secureCookie)
                 .path("/api/v1/auth")
                 .maxAge(0)
-                .sameSite("Lax")
+                .sameSite(sameSite)
                 .build();
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
     }
