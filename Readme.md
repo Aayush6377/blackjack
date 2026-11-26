@@ -54,7 +54,6 @@ Blackjack Royale splits single-player table state synchronization, transactional
 | **Cache Layer** | Redis Cache | Accelerates hot read paths, session/state caching, and transient lookups to keep gameplay responsive. |
 | **Reverse Proxy & TLS** | Oracle Linux VM + Nginx + Let's Encrypt (Certbot) | Terminates HTTPS on `blackjack-royale.duckdns.org`, upgrades WebSocket connections, and forwards `X-Forwarded-Proto` / `X-Forwarded-Host` headers. |
 
-> Add your architecture screenshot at `./docs/architecture-preview.png` so the diagram preview renders directly on GitHub and links to [`/architecture`](https://blackjack-bice-omega.vercel.app/architecture).
 
 ---
 
