@@ -18,10 +18,17 @@ export interface AppFooterProps {
 }
 
 const PLATFORM_LINKS = [
+  { label: "Home", to: "/" },
   { label: "Rooms", to: "/rooms" },
   { label: "Wallet", to: "/wallet" },
   { label: "Profile", to: "/profile" },
-  { label: "Admin Console", to: "/admin/overview" },
+];
+
+const INFO_LINKS = [
+  { label: "Game Rules", to: "/rules" },
+  { label: "System Architecture", to: "/architecture" },
+  { label: "About Developer", to: "/about" },
+  { label: "Terms & Conditions", to: "/terms" },
 ];
 
 const BUILT_WITH_STACK = [
@@ -68,8 +75,8 @@ export function AppFooter({ className = "" }: AppFooterProps) {
           <div className="space-y-4 lg:col-span-5">
             <BlackjackLogo size="md" />
             <p className="max-w-sm text-xs leading-relaxed text-neutral-400">
-              Single-player Blackjack platform engineered with transactional chip
-              settlement, real-time hand updates, and role-based management.
+              Blackjack platform engineered with transactional chip settlement,
+              real-time hand updates, and role-based management.
             </p>
 
             <div className="flex items-center gap-2.5 pt-1">
@@ -127,50 +134,22 @@ export function AppFooter({ className = "" }: AppFooterProps) {
             </ul>
           </div>
 
-          {/* ENGINEERING */}
+          {/* PAGES & INFO */}
           <div className="space-y-3.5 lg:col-span-2">
             <h3 className="text-[11px] font-bold uppercase tracking-[0.16em] text-neutral-400">
-              Engineering
+              Explore
             </h3>
             <ul className="space-y-2.5 text-xs">
-              <li>
-                <a
-                  href="https://spring.io/projects/spring-boot"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-neutral-300 transition hover:text-amber-300"
-                >
-                  System Architecture
-                </a>
-              </li>
-              <li>
-                <a
-                  href={SOCIAL_LINKS.portfolio}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-neutral-300 transition hover:text-amber-300"
-                >
-                  About Developer
-                </a>
-              </li>
-              <li>
-                <a
-                  href={SOCIAL_LINKS.github}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-neutral-300 transition hover:text-amber-300"
-                >
-                  Source &amp; Repos
-                </a>
-              </li>
-              <li>
-                <Link
-                  to="/rooms"
-                  className="text-neutral-300 transition hover:text-amber-300"
-                >
-                  Table Rules &amp; Payouts
-                </Link>
-              </li>
+              {INFO_LINKS.map(({ label, to }) => (
+                <li key={to}>
+                  <Link
+                    to={to}
+                    className="text-neutral-300 transition hover:text-amber-300"
+                  >
+                    {label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -201,7 +180,7 @@ export function AppFooter({ className = "" }: AppFooterProps) {
         <div className="mt-10 flex flex-col gap-3 border-t border-neutral-800/80 pt-5 text-xs text-neutral-500 sm:flex-row sm:items-center sm:justify-between">
           <div className="inline-flex items-center gap-2 text-neutral-400">
             <ShieldCheck className="h-4 w-4 text-emerald-400" />
-            <span>Single-Player Table Ledger • Virtual Chips Only</span>
+            <span>Blackjack Royale • Virtual Chips Only</span>
           </div>
           <p>© {new Date().getFullYear()} Aayush Kukreja • All rights reserved.</p>
         </div>

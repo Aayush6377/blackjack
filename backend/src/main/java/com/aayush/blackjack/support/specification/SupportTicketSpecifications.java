@@ -1,4 +1,4 @@
-package com.aayush.blackjack.support.repository;
+package com.aayush.blackjack.support.specification;
 
 import com.aayush.blackjack.support.entity.SupportTicket;
 import com.aayush.blackjack.support.enums.TicketCategory;

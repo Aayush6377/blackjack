@@ -60,7 +60,7 @@ export function SignupPage() {
           <div className="mb-6 flex items-center justify-between">
             <BlackjackLogo
               size="sm"
-              onClick={() => navigate("/rooms")}
+              onClick={() => navigate("/")}
             />
 
             {/* Step Indicator */}

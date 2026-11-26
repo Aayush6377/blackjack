@@ -34,6 +34,7 @@ import GameRulesPage from "../pages/guest/GameRulesPage";
 import TermsPage from "../pages/guest/TermsPage";
 import AboutDeveloperPage from "../pages/guest/AboutDeveloperPage";
 import ArchitecturePage from "../pages/guest/ArchitecturePage";
+import LandingPage from "../pages/guest/LandingPage";
 
 export const router = createBrowserRouter([
   {
@@ -54,6 +55,7 @@ export const router = createBrowserRouter([
           {
             element: <GuestLayout />,
             children: [
+              { index: true, element: <LandingPage /> },
               { path: "/rules", element: <GameRulesPage /> },
               { path: "/architecture", element: <ArchitecturePage /> },
               { path: "/terms", element: <TermsPage /> },

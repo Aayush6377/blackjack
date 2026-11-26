@@ -1,11 +1,15 @@
 import { Outlet } from "react-router-dom";
+import { useAuth } from "../../../hooks/useAuth";
+import { UserNavbar } from "../user/UserNavbar";
 import { GuestNavbar } from "./GuestNavbar";
 import { AppFooter } from "../../ui/AppFooter";
 
 export function GuestLayout() {
+  const { isAuthenticated } = useAuth();
+
   return (
     <div className="flex min-h-screen flex-col bg-neutral-950 text-slate-100">
-      <GuestNavbar />
+      {isAuthenticated ? <UserNavbar /> : <GuestNavbar />}
 
       <main className="relative flex-1">
         <div

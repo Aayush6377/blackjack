@@ -93,7 +93,7 @@ export function LoginPage() {
           <div className="mb-6 flex items-center justify-between">
             <BlackjackLogo
               size="sm"
-              onClick={() => navigate(getDefaultHomeForRole(user?.role))}
+              onClick={() => navigate("/")}
             />
           </div>
 

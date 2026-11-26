@@ -7,6 +7,7 @@ import {
   LifeBuoy,
   LogOut,
   Menu,
+  Plus,
   Shield,
   X,
 } from "lucide-react";
@@ -133,38 +134,53 @@ export function UserNavbar({ balance }: UserNavbarProps) {
           </nav>
         </div>
 
-        {/* Right: Chip Balance + Admin Pill + Player Profile + Logout */}
-        <div className="hidden md:flex items-center gap-3">
+        {/* Right: Chip Balance + Plus Button + Admin + Player Profile + Logout */}
+        <div className="hidden md:flex items-center gap-2.5">
           {typeof effectiveBalance === "number" && (
-            <motion.button
-              type="button"
-              onClick={() => navigate("/wallet")}
-              title="View chip wallet"
+            <motion.div
               animate={
                 !prefersReducedMotion && balancePulse
-                  ? { scale: [1, 1.05, 1] }
+                  ? { scale: [1, 1.04, 1] }
                   : { scale: 1 }
               }
               transition={{ duration: 0.28 }}
-              className={`inline-flex cursor-pointer items-center gap-2 rounded-xl border px-3.5 py-2 text-xs font-semibold shadow-inner transition ${pulseClass}`}
+              className={`inline-flex items-center rounded-xl border transition ${pulseClass}`}
             >
-              <ChipTokenIcon className="h-4 w-4 shrink-0 text-amber-400" />
-              <span className="font-mono text-sm font-bold tabular-nums tracking-tight">
-                {effectiveBalance.toLocaleString("en-IN")}
-              </span>
-              <span className="text-[11px] uppercase tracking-wider text-amber-300/75">
-                {effectiveBalance === 1 ? "Chip" : "Chips"}
-              </span>
-            </motion.button>
+              <button
+                type="button"
+                onClick={() => navigate("/wallet")}
+                title="View chip wallet"
+                className="inline-flex cursor-pointer items-center gap-2 py-2 pr-2.5 pl-3.5 text-xs font-semibold"
+              >
+                <ChipTokenIcon className="h-4 w-4 shrink-0 text-amber-400" />
+                <span className="font-mono text-sm font-bold tabular-nums tracking-tight">
+                  {effectiveBalance.toLocaleString("en-IN")}
+                </span>
+                <span className="text-[11px] uppercase tracking-wider text-amber-300/75">
+                  {effectiveBalance === 1 ? "Chip" : "Chips"}
+                </span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => navigate("/plans")}
+                title="Buy chip plans"
+                aria-label="Buy chip plans"
+                className="mr-1.5 inline-flex h-6 w-6 cursor-pointer items-center justify-center rounded-lg border border-amber-400/35 bg-amber-400/15 text-amber-200 transition hover:border-amber-300/60 hover:bg-amber-400/25 hover:text-white"
+              >
+                <Plus className="h-3.5 w-3.5 stroke-[2.5]" />
+              </button>
+            </motion.div>
           )}
 
           {isAdmin && (
             <button
               type="button"
               onClick={() => navigate("/admin")}
-              className="inline-flex cursor-pointer items-center gap-1.5 rounded-xl border border-amber-500/35 bg-amber-500/10 px-3 py-2 text-xs font-semibold text-amber-300 transition hover:bg-amber-500/20"
+              title="Open Admin Console"
+              className="inline-flex cursor-pointer items-center gap-1.5 rounded-xl border border-neutral-800 bg-neutral-900/85 px-3 py-2 text-xs font-semibold text-amber-300 transition hover:border-amber-400/45 hover:bg-neutral-900 hover:text-amber-200"
             >
-              <Shield className="h-3.5 w-3.5" />
+              <Shield className="h-3.5 w-3.5 text-amber-400" />
               <span>Admin</span>
             </button>
           )}
@@ -229,22 +245,36 @@ export function UserNavbar({ balance }: UserNavbarProps) {
             className="border-t border-neutral-800/90 bg-neutral-950/98 px-4 py-4 md:hidden space-y-3.5"
           >
             {typeof effectiveBalance === "number" && (
-              <button
-                type="button"
-                onClick={() => {
-                  setMobileOpen(false);
-                  navigate("/wallet");
-                }}
-                className="flex w-full cursor-pointer items-center justify-between rounded-xl border border-amber-400/25 bg-neutral-900/90 px-3.5 py-2.5"
-              >
-                <span className="inline-flex items-center gap-2 text-xs font-medium text-neutral-400">
-                  <ChipTokenIcon className="h-4 w-4 shrink-0 text-amber-400" />
-                  <span>Available Chips</span>
-                </span>
-                <span className="font-mono text-sm font-bold tabular-nums text-amber-200">
-                  {effectiveBalance.toLocaleString("en-IN")}
-                </span>
-              </button>
+              <div className="flex items-center justify-between rounded-xl border border-amber-400/25 bg-neutral-900/90 px-3.5 py-2.5">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileOpen(false);
+                    navigate("/wallet");
+                  }}
+                  className="flex flex-1 cursor-pointer items-center justify-between pr-3 text-left"
+                >
+                  <span className="inline-flex items-center gap-2 text-xs font-medium text-neutral-400">
+                    <ChipTokenIcon className="h-4 w-4 shrink-0 text-amber-400" />
+                    <span>Available Chips</span>
+                  </span>
+                  <span className="font-mono text-sm font-bold tabular-nums text-amber-200">
+                    {effectiveBalance.toLocaleString("en-IN")}
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileOpen(false);
+                    navigate("/plans");
+                  }}
+                  aria-label="Buy chip plans"
+                  className="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg border border-amber-400/35 bg-amber-400/15 text-amber-200 transition hover:bg-amber-400/25"
+                >
+                  <Plus className="h-4 w-4 stroke-[2.5]" />
+                </button>
+              </div>
             )}
 
             <nav aria-label="Mobile navigation" className="flex flex-col gap-1.5">
@@ -273,9 +303,9 @@ export function UserNavbar({ balance }: UserNavbarProps) {
                     setMobileOpen(false);
                     navigate("/admin");
                   }}
-                  className="flex w-full cursor-pointer items-center gap-2.5 rounded-xl border border-amber-500/30 bg-amber-500/10 px-3.5 py-2.5 text-left text-sm font-semibold text-amber-300"
+                  className="flex w-full cursor-pointer items-center gap-2.5 rounded-xl border border-neutral-800 bg-neutral-900/85 px-3.5 py-2.5 text-left text-sm font-semibold text-amber-300 transition hover:border-amber-400/45"
                 >
-                  <Shield className="h-4 w-4" />
+                  <Shield className="h-4 w-4 text-amber-400" />
                   <span>Admin Console</span>
                 </button>
               )}

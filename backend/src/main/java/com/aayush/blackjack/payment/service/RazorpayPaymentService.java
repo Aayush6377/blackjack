@@ -43,10 +43,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
-import java.util.LinkedHashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -66,6 +63,7 @@ public class RazorpayPaymentService implements PaymentService {
     private final ChipTransactionRepository chipTransactionRepository;
     private final WebhookEventRepository webhookEventRepository;
     private final NotificationService notificationService;
+    private final PaymentIdempotencyService paymentIdempotencyService;
 
     @Override
     @Transactional
@@ -136,6 +134,17 @@ public class RazorpayPaymentService implements PaymentService {
     @Override
     @Transactional
     public PaymentVerificationResponse verifyPayment(UUID userId, VerifyPaymentRequest request) {
+        String idempotencyKey = paymentIdempotencyService.buildVerifyKey(
+                userId,
+                request.razorpayOrderId(),
+                request.razorpayPaymentId()
+        );
+
+        Optional<PaymentVerificationResponse> cached = paymentIdempotencyService.getCached(idempotencyKey);
+        if (cached.isPresent()) {
+            return cached.get();
+        }
+
         PaymentAttempt attempt = paymentAttemptRepository.findByRazorpayOrderId(request.razorpayOrderId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "PaymentAttempt not found for order: " + request.razorpayOrderId()));
 
@@ -166,11 +175,15 @@ public class RazorpayPaymentService implements PaymentService {
         attempt.setRazorpaySignature(request.razorpaySignature());
         settlePurchaseAsSuccess(purchase, attempt);
 
-        return PaymentVerificationResponse.builder()
+        PaymentVerificationResponse response = PaymentVerificationResponse.builder()
                 .purchaseId(purchase.getId())
                 .status(purchase.getStatus().name())
                 .chipsAwarded(purchase.getChipsAwarded())
                 .build();
+
+        runAfterCommit(() -> paymentIdempotencyService.cache(idempotencyKey, response));
+
+        return response;
     }
 
     @Override

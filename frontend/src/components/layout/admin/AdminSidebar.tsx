@@ -59,7 +59,7 @@ function SidebarPanel({ onNavigate }: SidebarPanelProps) {
             size="sm"
             onClick={() => {
               onNavigate?.();
-              navigate("/admin");
+              navigate("/");
             }}
           />
         </div>

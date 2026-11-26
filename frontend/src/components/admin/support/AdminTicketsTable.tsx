@@ -1,8 +1,12 @@
+import { Link } from "react-router-dom";
 import {
+  CheckCircle2,
   ChevronLeft,
   ChevronRight,
+  Clock,
   Inbox,
   MessageSquareReply,
+  UserRound,
 } from "lucide-react";
 import type {
   PageResponsePayload,
@@ -79,80 +83,110 @@ export function AdminTicketsTable({
                 <th className="px-4 py-3">Subject</th>
                 <th className="px-4 py-3">Category</th>
                 <th className="px-4 py-3">Status</th>
-                <th className="px-4 py-3">Resolution</th>
+                <th className="px-4 py-3 text-center">Resolution</th>
                 <th className="px-4 py-3">Created</th>
-                <th className="px-4 py-3 text-right">Action</th>
+                <th className="px-4 py-3 text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-neutral-800/70">
-              {items.map((ticket) => (
-                <tr
-                  key={ticket.id}
-                  onClick={() => onOpenTicket(ticket)}
-                  className="cursor-pointer transition hover:bg-neutral-900/75"
-                >
-                  <td className="whitespace-nowrap px-4 py-3.5">
-                    <div className="font-semibold text-slate-100">
-                      {ticket.userName}
-                    </div>
-                    <div className="text-xs text-neutral-400">
-                      {ticket.userEmail}
-                    </div>
-                  </td>
+              {items.map((ticket) => {
+                const hasResolution = Boolean(ticket.adminResolution);
 
-                  <td className="max-w-[220px] px-4 py-3.5">
-                    <div className="truncate font-semibold text-slate-100">
-                      {ticket.subject}
-                    </div>
-                    <div className="truncate text-xs text-neutral-400">
-                      {ticket.message}
-                    </div>
-                  </td>
+                return (
+                  <tr
+                    key={ticket.id}
+                    onClick={() => onOpenTicket(ticket)}
+                    className="cursor-pointer transition hover:bg-neutral-900/75"
+                  >
+                    <td className="whitespace-nowrap px-4 py-3.5">
+                      <div className="font-semibold text-slate-100">
+                        {ticket.userName}
+                      </div>
+                      <div className="text-xs text-neutral-400">
+                        {ticket.userEmail}
+                      </div>
+                    </td>
 
-                  <td className="whitespace-nowrap px-4 py-3.5 text-xs text-neutral-300">
-                    {formatTicketCategory(ticket.category)}
-                  </td>
+                    <td className="max-w-[220px] px-4 py-3.5">
+                      <div className="truncate font-semibold text-slate-100">
+                        {ticket.subject}
+                      </div>
+                      <div className="truncate text-xs text-neutral-400">
+                        {ticket.message}
+                      </div>
+                    </td>
 
-                  <td className="whitespace-nowrap px-4 py-3.5">
-                    <AdminTicketStatusBadge status={ticket.status} />
-                  </td>
+                    <td className="whitespace-nowrap px-4 py-3.5 text-xs text-neutral-300">
+                      {formatTicketCategory(ticket.category)}
+                    </td>
 
-                  <td className="max-w-[210px] px-4 py-3.5 text-xs">
-                    {ticket.adminResolution ? (
-                      <span className="line-clamp-2 text-emerald-300">
-                        {ticket.adminResolution}
-                      </span>
-                    ) : (
-                      <span className="italic text-neutral-500">
-                        Awaiting resolution
-                      </span>
-                    )}
-                  </td>
+                    <td className="whitespace-nowrap px-4 py-3.5">
+                      <AdminTicketStatusBadge status={ticket.status} />
+                    </td>
 
-                  <td className="whitespace-nowrap px-4 py-3.5 font-mono text-xs text-neutral-400">
-                    {formatDate(ticket.createdAt)}
-                  </td>
+                    <td className="whitespace-nowrap px-4 py-3.5 text-center">
+                      {hasResolution ? (
+                        <span
+                          title={ticket.adminResolution ?? "Resolved"}
+                          aria-label="Resolution added"
+                          className="inline-flex h-7 w-7 items-center justify-center rounded-lg border border-emerald-500/30 bg-emerald-500/10 text-emerald-400"
+                        >
+                          <CheckCircle2 className="h-4 w-4" />
+                        </span>
+                      ) : (
+                        <span
+                          title="Awaiting resolution"
+                          aria-label="Awaiting resolution"
+                          className="inline-flex h-7 w-7 items-center justify-center rounded-lg border border-neutral-800 bg-neutral-900 text-neutral-500"
+                        >
+                          <Clock className="h-4 w-4" />
+                        </span>
+                      )}
+                    </td>
 
-                  <td className="whitespace-nowrap px-4 py-3.5 text-right">
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onOpenTicket(ticket);
-                      }}
-                      className="inline-flex cursor-pointer items-center gap-1.5 rounded-lg border border-amber-400/35 bg-amber-500/10 px-2.5 py-1.5 text-xs font-semibold text-amber-300 transition hover:border-amber-400/60 hover:bg-amber-500/20"
-                    >
-                      <MessageSquareReply className="h-3.5 w-3.5" />
-                      <span>
-                        {ticket.status === "RESOLVED" ||
-                        ticket.status === "CLOSED"
-                          ? "Update"
-                          : "Resolve"}
-                      </span>
-                    </button>
-                  </td>
-                </tr>
-              ))}
+                    <td className="whitespace-nowrap px-4 py-3.5 font-mono text-xs text-neutral-400">
+                      {formatDate(ticket.createdAt)}
+                    </td>
+
+                    <td className="whitespace-nowrap px-4 py-3.5 text-right">
+                      <div className="inline-flex items-center justify-end gap-1.5">
+                        <Link
+                          to={`/admin/users/${ticket.userId}`}
+                          onClick={(e) => e.stopPropagation()}
+                          title="View user profile"
+                          aria-label={`View user ${ticket.userName}`}
+                          className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-sky-400/30 bg-sky-500/10 text-sky-300 transition hover:border-sky-400/60 hover:bg-sky-500/20"
+                        >
+                          <UserRound className="h-3.5 w-3.5" />
+                        </Link>
+
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onOpenTicket(ticket);
+                          }}
+                          title={
+                            ticket.status === "RESOLVED" ||
+                            ticket.status === "CLOSED"
+                              ? "Update ticket"
+                              : "Resolve ticket"
+                          }
+                          aria-label={
+                            ticket.status === "RESOLVED" ||
+                            ticket.status === "CLOSED"
+                              ? "Update ticket"
+                              : "Resolve ticket"
+                          }
+                          className="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg border border-amber-400/35 bg-amber-500/10 text-amber-300 transition hover:border-amber-400/60 hover:bg-amber-500/20"
+                        >
+                          <MessageSquareReply className="h-3.5 w-3.5" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>

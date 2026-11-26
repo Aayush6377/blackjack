@@ -10,7 +10,7 @@ import com.aayush.blackjack.support.dto.SupportTicketResponse;
 import com.aayush.blackjack.support.entity.SupportTicket;
 import com.aayush.blackjack.support.enums.TicketStatus;
 import com.aayush.blackjack.support.repository.SupportTicketRepository;
-import com.aayush.blackjack.support.repository.SupportTicketSpecifications;
+import com.aayush.blackjack.support.specification.SupportTicketSpecifications;
 import com.aayush.blackjack.user.entity.User;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
