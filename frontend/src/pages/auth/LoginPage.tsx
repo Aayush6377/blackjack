@@ -11,6 +11,7 @@ import { BlackjackLogo } from "../../components/ui/BlackjackLogo";
 import { useAuth } from "../../hooks/useAuth";
 import { loginSchema, type LoginFormValues } from "../../schema/auth.schema";
 import { applyBackendFieldErrors, extractBackendMessage } from "../../utils/apiError";
+import { DemoLoginButtons } from "../../components/auth/DemoLoginButtons";
 
 function isAdminRole(role?: string | null): boolean {
   return role?.trim().toUpperCase() === "ADMIN";
@@ -28,6 +29,7 @@ export function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
   const [forgotOpen, setForgotOpen] = useState(false);
+  const [isDemoSubmitting, setIsDemoSubmitting] = useState(false);
 
   const {
     register,
@@ -44,6 +46,7 @@ export function LoginPage() {
   });
 
   const currentEmail = watch("email");
+  const isAuthBusy = isSubmitting || isDemoSubmitting;
 
   const resolveDestination = (resolvedRole?: string | null): string => {
     const effectiveRole = resolvedRole ?? user?.role;
@@ -71,6 +74,15 @@ export function LoginPage() {
       );
     }
   };
+
+  const handleDemoLogin = async (credentials: LoginFormValues) => {
+      setIsDemoSubmitting(true);
+      try {
+        await onSubmit(credentials);
+      } finally {
+        setIsDemoSubmitting(false);
+      }
+    };
 
   return (
     <main className="min-h-screen w-full bg-neutral-950 text-slate-100 grid grid-cols-1 lg:grid-cols-12">
@@ -233,7 +245,13 @@ export function LoginPage() {
               </form>
 
               {/* OAuth Providers */}
-              <OAuthButtons mode="login" disabled={isSubmitting} />
+              <OAuthButtons mode="login" disabled={isAuthBusy} />
+
+              {/* Demo Buttons */}
+              <DemoLoginButtons
+                onDemoLogin={handleDemoLogin}
+                disabled={isAuthBusy}
+              />
 
               {/* Switch to Signup */}
               <p className="text-center text-xs text-neutral-400">
