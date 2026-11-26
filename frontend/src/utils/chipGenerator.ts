@@ -68,7 +68,7 @@ export function generateRoomChips(
       : safeMax;
 
   const candidates = STANDARD_STEPS.filter(
-    (step) => step >= safeMin && step <= safeMax
+    (step) => step >= safeMin && step <= ceiling
   );
 
   let chosen: number[] = [];

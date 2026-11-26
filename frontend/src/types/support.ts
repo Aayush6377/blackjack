@@ -63,6 +63,6 @@ export interface SupportTicketResponse {
   resolvedByAdminId: string | null;
   resolvedByAdminName: string | null;
   resolvedAt: string | null;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: string | null;
+  updatedAt: string | null;
 }
